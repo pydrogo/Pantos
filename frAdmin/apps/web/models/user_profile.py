@@ -11,14 +11,14 @@ from django.core.validators import FileExtensionValidator
 
 class UserProfile(Base):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='UserProfile')
-    mobile = models.IntegerField(null=False, max_length=12)
+    mobile = models.IntegerField(null=False)
     unit = models.CharField(null=False, max_length=50)
-    group = models.ForeignKey(GroupDjango, on_delete=models.DO_NOTHING, blank=True)
+    group = models.ForeignKey(GroupDjango, on_delete=models.CASCADE, blank=True)
     image_profile = models.FileField(upload_to=get_user_file_path,
                                      validators=[FileExtensionValidator(['jpg', 'png', 'jpeg'])])
     pass_limitation = models.IntegerField(null=False, default=00000)
     last_pass = models.DateTimeField(null=True, blank=True)
-    counter = models.IntegerField(null=False, max_length=50, default=0)
+    counter = models.IntegerField(null=False, default=0)
     last_snapshot = models.CharField(null=True, max_length=100, blank=True)
 
     black_list = models.BooleanField(default=False)

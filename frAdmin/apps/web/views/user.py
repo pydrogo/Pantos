@@ -5,8 +5,6 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404
-from requests import request
-
 from frAdmin.apps.web.forms.user_profile import UserProfileForm
 from frAdmin.apps.web.forms.user_image import UserImageForm
 from frAdmin.apps.web.forms.user import UserForm

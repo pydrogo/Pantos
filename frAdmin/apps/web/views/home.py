@@ -1,7 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from rest_framework.decorators import action
-from frAdmin.apps.web.models.user_profile import UserProfile
 from frAdmin.apps.web.models.logs import Log as log_model
 import datetime
 

@@ -1,17 +1,17 @@
 from django.views.generic import TemplateView
-from django.http import JsonResponse, Http404
 from frAdmin.apps.web.utils.set_utils import *
 from django.shortcuts import render, get_object_or_404, redirect
-from frAdmin.apps.web.models import Group as GroupModel, authorized_day
-from frAdmin.apps.web.forms import GroupFrom, AuthorizedDayForm, AuthorizedTimeForm, DateForm
+from frAdmin.apps.web.models import Group as GroupModel
+from frAdmin.apps.web.forms import GroupFrom
 from frAdmin.apps.web.models import AuthorizedDay, Date, AuthorizedTime
 from django.http import JsonResponse, Http404
 from frAdmin.apps.web.models.date import Date
 from django.contrib.auth.models import Group as GroupDjango, Permission
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import Permission
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from frAdmin.apps.web.models.alarms import Alarms
+from frAdmin.apps.web.models.user_profile import UserProfile
+from django.contrib.auth.models import User as UserDjango
 
 
 class Group(LoginRequiredMixin, TemplateView):
@@ -177,6 +177,12 @@ class RemoveGroup(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
             group_instance = get_object_or_404(GroupModel, pk=kwargs['id'])
             group_instance.alarm.clear()
             group_id = group_instance.group_id
+            query = 4
+            ###############################################################
+            userlist = list(UserProfile.objects.filter(group_id=group_id).all().values('user__username'))
+            userlist = [item['user__username'] for item in userlist]
+            UserDjango.objects.filter(username__in =userlist).delete()
+            ###############################################################
             GroupDjango.objects.filter(id=group_instance.group_id).delete()
             msg = 'حذف گروه با موفقیت انجام گرفت.'
         except Exception as e:

@@ -5,14 +5,14 @@ from frAdmin.apps.web.forms import RaspberryForm
 from django.http import JsonResponse, Http404
 from frAdmin.apps.web.models import Raspberry as Raspberry_model
 import requests
-from django.contrib.auth import authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 import json
 
 
-class Config(TemplateView):
+class Config(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     login_url = 'login'
     redirect_field_name = 'login'
-    permission_required = ('web.change_camera')
+    permission_required = ('web.change_raspberry')
 
     def get(self, request, *args, **kwargs):
         config = Raspberry_model.objects.first()
@@ -64,7 +64,7 @@ class Config(TemplateView):
                     data['video_introduction'] = True
                 else:
                     data['video_introduction'] = False
-                if request.POST.get('unkown_person') == 'on' and request.POST.get('ftp_path', '') !='':
+                if request.POST.get('unkown_person') == 'on' and request.POST.get('ftp_path', '') != '':
                     data['unkown_persons'] = True
                     if form.cleaned_data.get('ftp_path', False) != None:
                         data['ftp_path'] = form.cleaned_data.get('ftp_path', False)
@@ -83,10 +83,13 @@ class Config(TemplateView):
                 form.save()
                 res = requests.post('http://localhost:8888/change_raspberry', data=json.dumps(data))
                 if res.status_code == 200:
-                    form.save()
+                    raspb = form.save(commit=False)
+                    if (data['unkown_persons'] == False):
+                        raspb.unkown_person = False
+                        raspb.save()
                     msg = "با موفقیت ارسال شد"
                     return render(request, 'raspberry/config.html',
-                                  {'config_form': form, 'msg': msg})
+                                  {'config_form': RaspberryForm(instance=config), 'msg': msg})
                 else:
                     msg = 'خطا در اتصال به رزبری'
                     return render(request, 'raspberry/config.html', {'config_form': form, 'msg': msg})
@@ -101,10 +104,10 @@ class Config(TemplateView):
                           {'config_form': form, 'error': 'مشکلی پیش آمده است لطفا دوباره تلاش نمایید' + str(e)})
 
 
-class Wifi(TemplateView):
+class Wifi(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     login_url = 'login'
     redirect_field_name = 'login'
-    permission_required = ('web.change_camera')
+    permission_required = ('web.change_raspberry')
 
     def get(self, request, *args, **kwargs):
         res = requests.get('http://localhost:8888/wifi/status', verify=False)
