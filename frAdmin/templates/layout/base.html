@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>frAdmin web</title>
+
+    <!-- Global stylesheets -->
+    <!--<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet"
+          type="text/css">-->
+    <link href="{% static 'css/icons/icomoon/styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/core.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/components.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/colors.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/pantos.css' %}" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+    {% block base_style %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+    {% block base_content %}{% endblock %}
+    <!-- Core JS files -->
+    <script type="text/javascript" src="{% static 'js/plugins/loaders/pace.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/core/libraries/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/JqueryExtensions.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/core/libraries/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/loaders/blockui.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vendor/persian-date/persian-date.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/styling/uniform.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/validation/validate.min.js' %}"></script>
+
+    <!-- /core JS files -->
+    {% block base_pre_script %}{% endblock %}
+    <script type="text/javascript" src="{% static 'js/core/app.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+    {% block base_post_script %}{% endblock %}
+    <script>{% block base_script %}{% endblock %}</script>
+</body>
+</html>

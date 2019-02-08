@@ -1,0 +1,14 @@
+{% load widget_tweaks %}
+<div class="form-group {% if field.errors|length > 0 %}has-error{% endif %}">
+    <label class="col-lg-2 control-label">{{ name }}:</label>
+    <div class="col-lg-10">
+
+        <div class="uploader">
+            {% render_field field class+='file-styled-primary' type='file' placeholder='' onchange=func accept="image/png, image/jpeg, image/jpg" %}
+            <span class="filename" style="user-select: none;">{{ val }}</span>
+            <span class="action btn bg-blue legitRipple" style="user-select: none;">Choose File</span>
+
+        </div>
+        {% for error in field.errors %}<span class="help-block">{{ error }}</span>{% endfor %}
+    </div>
+</div>

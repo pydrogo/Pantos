@@ -1,0 +1,83 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/raspberry.js' %}"></script>
+
+{% endblock %}
+
+{% block base_post_script %}
+{% endblock %}
+
+<!-- Content area -->
+
+{% block content %}
+    {% if msg %}
+        <script>
+            window.alert('{{ msg }}');
+            window.location.replace('/raspberry/wifi');
+        </script>
+    {% endif %}
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">اتصال به wifi </h5>
+        </div>
+    </div>
+
+    <div class="panel panel-flat">
+        <div class="panel-body">
+            <form name="wifi_form" id="wifi_form" method="post" class="form-horizontal" ENCTYPE="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <input type="hidden" value="0" name="wifi_turn_on" id="wifi_turn_on">
+                <div class="row" id="wifi_div_id">
+                    <div class="col-md-6">
+                        <div class="form-group ">
+                            <label class="col-lg-4 control-label">SSID:</label>
+                            <div class="col-lg-8">
+                                <input name="ssid" class="form-control" type="text">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-lg-4 control-label">رمز اتصال:</label>
+                            <div class="col-lg-8">
+                                <input name="wifi_password" class="form-control" type="text">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div style="padding-right: 25%">
+                            {% if wifi_status.status %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p>وضعیت فعلی : </p>
+                                        <h5 class=" label label-success"> روشن </h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>SSID : </p>
+                                        <h5> {{ wifi_status.ssid }}</h5>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if not wifi_status.status %}
+                                <p>وضعیت فعلی : </p>
+                                <h5 class=" label label-danger"> خاموش </h5>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <button type="submit" class="btn btn-primary"> اتصال <i
+                        class="icon-arrow-right14 position-right"></i></button>
+            </form>
+            <div class="text-right">
+                <button onclick="turn_off_wifi()" type="button" class="btn btn-danger"> خاموش کردن وای فای <i
+                        class=""></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- /individual column searching (selects) -->
+{% endblock %}

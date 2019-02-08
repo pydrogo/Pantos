@@ -1,0 +1,85 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_erebor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+
+<!-- Content area -->
+{% block base_script %}
+    function iconTemplate(data, type, row, meta) {
+    if (type == 'display') {
+        return '<img style="width:20px;" src="/media/jobs/user_' + data + '"/>';
+    }
+    return data;
+    }
+
+    function actionTemplateEdit(data, type, row, meta) {
+        if (type == 'display') {
+            var edit_user = '{% url 'edit_user' '-10' %}'.replace('-10', data);
+            return '{% if perms.web.change_userprofile %}<a href="'+edit_user+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a>{% endif %}';
+        }
+    return data;
+    }
+
+    function actionTemplateLog(data, type, row, meta) {
+        if (type == 'display') {
+            var log_list = '{% url 'user_log' '-10' %}'.replace('-10', data);
+            return '{% if perms.web.userprofile_list %}<a href="'+log_list+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-grey"><i class="icon-clapboard"></i></a>{% endif %}';
+        }
+    return data;
+    }
+    function actionTemplateRemove(data, type, row, meta) {
+        if (type == 'display') {
+            var remove_user = '{% url 'delete_user' '-10' %}'.replace('-10', data);
+            return '{% if perms.web.delete_userprofile %}<a href="'+remove_user+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>{% endif %}';
+        }
+    return data;
+    }
+{% endblock %}
+
+
+{% block content %}
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">کاربران</h5>
+            {% if perms.web.add_userprofile %}
+            <div class="heading-elements">
+                <a href='{% url 'create_user' %}' class="btn btn-primary">افزودن کاربر جدید<i
+                        class="icon-plus3 position-right"></i></a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+        <div class="panel panel-flat">
+        <table id="group-table" class="dataTable table frAdmin-datatable" data-url="{% url 'get_user_list' %}">
+            <thead class="table-options m--hide">
+            <tr>
+                <th class="table-column" data-field="user__username" data-template="">نام کاربری</th>
+                <th class="table-column" data-field="user__first_name" data-template="">نام</th>
+                <th class="table-column" data-field="user__last_name" data-template="">نام خانوادگی</th>
+                <th class="table-column" data-field="user__email" data-template="">ایمیل</th>
+                <th class="table-column" data-field="user__is_active" data-template="booleanTemplateFrAdmin">وضعیت</th>
+                <th class="table-column" data-field="black_list" data-template="booleanTemplateFrAdmin">بلاک</th>
+                <th class="table-column" data-field="mobile" data-template="">موبایل</th>
+                <th class="table-column" data-field="unit" data-template="">واحد</th>
+                <th class="table-column" data-field="group__name" data-template="">گروه</th>
+                <th class="table-column" data-field="pass_limitation" data-template="">محدودیت تردد</th>
+                <th class="table-column" data-field="id" data-template="actionTemplateLog">لاگ</th>
+                <th class="table-column" data-field="id" data-template="actionTemplateEdit">ویرایش</th>
+                <th class="table-column" data-field="id" data-template="actionTemplateRemove">حذف</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <!-- /individual column searching (selects) -->
+{% endblock %}

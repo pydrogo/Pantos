@@ -1,0 +1,84 @@
+{% extends "layout/base.html" %}
+{% load static %}
+{% block base_content %}
+    <!-- Main navbar -->
+    <div class="navbar navbar-default header-highlight">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="{% static 'images/logo_light.jpg' %}" alt=""></a>
+
+            <ul class="nav navbar-nav visible-xs-block">
+                <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+                <li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar-mobile">
+            <ul class="nav navbar-nav">
+                <li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown dropdown-user">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{% static 'images/placeholder.jpg' %}" alt="">
+                        <span>{{ user.first_name }} {{ user.last_name }}</span>
+                        <i class="caret"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href='{% url 'profile' %}'><i class="icon-user-plus"></i> My profile</a></li>
+                        <li><a href='{% url 'profile' %}'><i class="icon-cog5"></i> Account settings</a></li>
+                        <li><a href='{% url 'logout' %}'><i class="icon-switch2"></i> Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <!-- /main navbar -->
+
+
+    <!-- Page container -->
+    <div class="page-container">
+        {% if msg %}
+            <script>
+                window.alert('{{ msg }}');
+            </script>
+        {% endif %}
+        <!-- Page content -->
+        <div class="page-content">
+            <!-- Main sidebar -->
+            {% include 'layout/menu.html' %}
+            <!-- /main sidebar -->
+
+            <!-- Main content -->
+            <div class="content-wrapper">
+                <!-- Page header -->
+                <div class="page-header">
+                    <div class="breadcrumb-line breadcrumb-line-component mt-20 mb-20">
+                        <ul class="breadcrumb breadcrumb-caret">
+                            <li><a href="web"><i class="icon-home2 position-left"></i> Home</a></li>
+                            {% block breadcrumbs %}{% endblock %}
+                        </ul>
+                    </div>
+                </div>
+
+
+                <!-- /page header -->
+                <div class="content">
+                    {% block content %}{% endblock %}
+                    <!-- Footer -->
+                    <div class="footer text-muted">
+                        &copy; 2018. <a href="web">ESB web</a> by <a href="https://Asiatech.ir" target="_blank">Asiatech.ir</a>
+                    </div>
+                    <!-- /footer -->
+                </div>
+            </div>
+            <!-- /main content -->
+        </div>
+        <!-- /page content -->
+    </div>
+    <!-- /page container -->
+
+
+{% endblock %}

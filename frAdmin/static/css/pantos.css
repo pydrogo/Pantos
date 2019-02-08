@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'iranSans';
+    src: url('../fonts/iranSans.eot');
+    src: url('../fonts/iranSans.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/iranSans.woff') format('woff'),
+    url('../fonts/iranSans.woff2') format('woff2'),
+    url('../fonts/iranSans.ttf') format('truetype'),
+    url('../fonts/iranSans.svg#svgFontName') format('svg');
+}
+
+@font-face {
+    font-family: 'asiatech';
+    src: url('../fonts/asiatech.eot?');
+    src: url('../fonts/asiatech.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/asiatech.ttf?') format('truetype'),
+    url('../fonts/asiatech.woff?') format('woff'),
+    url('../fonts/asiatech.svg?#asiatech') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: iranSans !important;
+    font-size: 13px;
+    line-height: 1.5384616;
+    color: #333333;
+    /*background-color: rgba(0, 0, 0, 0.94);*/
+    /*background-image: url("");*/
+    /*background-color: #263238;*/
+}
+
+
+.navbar-default {
+    /* background-color: #fff; */
+    /* border-color: #ddd; */
+    background-color: rgba(0, 0, 0, 0.94);
+    border-color: #ddd;
+}
+
+.sidebar {
+    background-color: rgba(0, 0, 0, 0.94);
+
+}
+
+
+.panel {
+    background-color: #404348;
+    color: white;
+}
+
+
+.panel-flat > .panel-heading {
+    background-color: #404348;
+}
+
+
+.form-control {
+    color: wheat;
+    background-color:#404348 ;
+    height: 40px;
+
+}
+
+.frAdmin-datatable{
+    color: white;
+}
+
+.frAdmin-dashboard-datatable{
+    color: white;
+}
+#dashboard-panel-heading{
+
+    background-color: #1a222f;
+}
+
+.pantos_dropdown{
+    color: white;
+}
+
+.element.style {
+     color: white;
+}

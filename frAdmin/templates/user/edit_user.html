@@ -1,0 +1,160 @@
+{% extends "layout/page_headless.html" %}
+{% load widget_tweaks %}
+
+{% load static %}
+{% block base_style %}
+    <style type="text/css">
+        #x {
+            position: relative;
+            float: right;
+            color: red;
+            padding-top: 0;
+            padding-right: 0;
+            background-color: red;
+        }
+
+        iframe {
+            transform: scale(1, 1);
+            height: 355px;
+            width: 505px;
+        }
+    </style>
+{% endblock %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/visualization/d3/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/visualization/d3/d3_tooltip.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/styling/switchery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/styling/uniform.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/bootstrap_multiselect.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/moment/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/pickers/daterangepicker.js' %}"></script>
+{% endblock %}
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/pages/dashboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plupload.full.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.ui.plupload.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/User.js' %}"></script>
+    <script type="text/javascript">
+        {% if user_row %}
+            document.getElementById('username_validation_error').style.visibility = "visible";
+        {% else %}
+            document.getElementById('username_validation_error').style.visibility = "hidden";
+        {% endif %}
+        var frameUrl = '{% url 'stream' %}'
+    </script>
+{% endblock %}
+<!-- Content area -->
+{% block content %}
+
+    <div class="modal fade " role="dialog" id="modal_stream">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="modal_body_stream">
+                    <input type="hidden" id="input_select_camera">
+                    <div id="stream-div">
+                        <iframe id="stream-frame"
+                                src="">
+                        </iframe>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="snapshot_btn" onclick="snapshot()"> گرفتن عکس
+                        <i class="icon-arrow-right14 position-right"></i></button>
+                    <div class="col-md-12" id="show_modal_images">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">ویرایش کاربر {{ user_username }} : </h5>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+
+        <div class="panel-body">
+            <div class="col-md-6">
+                {#--------------------------------------------------------------------------------------#}
+                <select style="color: black" id="select_camera_stream">
+                    {% for item in camera_list %}
+                        <option value="{{ item.id }}"> {{ item.name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="col-md-3">
+
+                    <button type="submit" onclick="snapshot_model()" class="btn bg-violet ">گرفتن عکس<i
+                            class="icon-arrow-down-left32 position-left"></i></button>
+                </div>
+                <span class="col-md-2"></span>
+            </div>
+            <br><br><br>
+            <form method="post" class="form-horizontal" id="user_edit_form" ENCTYPE="multipart/form-data">
+
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group">
+                    {% include 'layout/user_text_filed.html' with field=user_instance_form.username name='شماره ملی' placeholder='نام کاربری' %}
+                    <span class="col-md-2"></span><span id="username_validation_error"
+                                                        style="color: yellow; visibility: hidden">⚠️لطفا فقط عدد 10 رقمی وارد نمایید⚠️</span>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">رمز عبور :</label>
+                        <div class="col-lg-10">
+                            <input type="password" name="password" class="form-control" placeholder="password"
+                                   id="password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">تکرار رمز عبور :</label>
+                        <div class="col-lg-10">
+                            <input type="password" class="form-control" placeholder="confirm password"
+                                   id="confirm_pass">
+                        </div>
+                    </div>
+                    {% include 'layout/user_text_filed.html' with field=user_instance_form.first_name name='نام' placeholder='FirstName' %}
+                    {% include 'layout/user_text_filed.html' with field=user_instance_form.last_name name='نام خانوادگی' placeholder='LastName' %}
+                    {% include 'layout/user_text_filed.html' with field=user_instance_form.email name='ایمیل' placeholder='Email' %}
+                    {% include 'layout/intiger_field.html' with field=userprofile_instance_form.mobile|attr:"maxlength:12" name='شماره همراه' placeholder='Mobile Number' %}
+                    {% include 'layout/user_text_filed.html' with field=userprofile_instance_form.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
+                    {% include 'layout/user_checkbox_field.html' with field=userprofile_instance_form.black_list name='بلاک' %}
+                    {% include 'layout/drop_down_field.html' with field=userprofile_instance_form.group name='گروه' placeholder='Group' %}
+                    {% include 'layout/integer_pass_field.html' with field=userprofile_instance_form.pass_limitation name='محدودیت تردد در روز' placeholder='Pass Limitation' %}
+                    {% include 'layout/upload_field.html' with field=image_instance_form.profile_image name='تصاویر تشخیص چهره'  func='show_dataset_pic()' placeholder='Face recognition images' %}
+                    <div class="row">
+                        {% for item in image_url %}
+                            <div class="col-md-2">
+                                <a class="x" title="حذف" href="{% url 'delete_dataset_image' img_id=item.id %}"><i
+                                        class="icon-close2"></i></a>
+                                <img id="image_tag" style="width: 100px"
+                                     src="{{ item.profile_image.url }}">
+                            </div>
+                        {% endfor %}
+                        <div id="dataset_pic_div"></div>
+
+                    </div>
+                    <div class="col-md-12" id="show_images">
+                    </div>
+                    {% include 'layout/single_upload_field.html' with field=userprofile_instance_form.image_profile name='تصویر پروفایل' placeholder='Profile Image' %}
+                    <div id="profile_pic_div"></div>
+
+                    {% if profile_image_url %}
+                        {% for item in profile_image_url %}
+                            {% if item.image_profile and item.image_profile.url %}
+                                <a target="_blank"><img id="image_tag" style="width: 100px"
+                                                        src="{{ item.image_profile.url }}"></a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <hr>
+            <input name="row_id" id="row_id" type="hidden" value="">
+            </form>
+            <div class="text-right">
+                <button class="btn btn-primary" onclick="edit_pass_validation()"> ذخیره <i
+                        class="icon-move-left position-right"></i></button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "layout/page_headless.html" %}
+{% load widget_tweaks %}
+
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/raspberry.js' %}"></script>
+
+{% endblock %}
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/raspberry.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+<!-- Content area -->
+{% block content %}
+    <script>
+        {% if error %}
+            window.alert({{ error }});
+        {% endif %}
+    </script>
+    <br>
+    <br>
+    <div class="panel panel-flat">
+
+        <div class="panel-body">
+            <a href="{% url 'reset_raspberry' %}" class="btn btn-danger">
+            <span>راه اندازی مجدد
+                <i class="icon-reset"></i>
+            </span>
+            </a>
+            <br>
+            <form method="post" class="form-horizontal" ENCTYPE="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        {% include 'layout/text_field.html' with field=config_form.name name='نام دستگاه' placeholder='نام دستگاه' %}
+                    </div>
+                    <div class="form-groucolp col-md-6">
+                        <label class="col-lg-3 control-label">ویدئو پیشواز:</label>
+                        <div class="col-lg-9 uploader">
+                            {% render_field config_form.video_intro class+="col-md-10 form-control file-styled-primary`" class+=cssClass accept="video/*" %}
+                            <span class="action btn bg-blue legitRipple" style="user-select: none;">Choose File</span>
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="col-lg-2 control-label">پخش ویدئو پیشواز :</label>
+                        <div class="col-lg-10">
+                            <input name="play_video_intro" id="play_video_intro_id" class="styled" type="checkbox"
+                                    {% if  config_form.play_video_intro.value %} checked="checked" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-lg-2 control-label">DHCP:</label>
+                        <div class="col-lg-10">
+                            <input name="dhcp" id="dhcp_id" onclick="dhcpchange()" class="styled" type="checkbox"
+                                    {% if  config_form.dhcp.value %} checked="checked" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="col-lg-2 control-label">افراد ناشناس:</label>
+                        <div class="col-lg-10">
+                            <input name="unkown_person" id="unkown_person_id" class="styled" onclick="unkown_func()"
+                                   type="checkbox"
+                                    {% if  config_form.unkown_person.value %} checked="checked" {% endif %}>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="hidden" name="ftp_path_val" id="ftp_path_val" value="">
+                        <div id="div_ip_id" class="form-group col-md-12">
+                            {% include 'layout/text_field.html' with field=config_form.ip name='آی پی جدید' placeholder=' برای مثال 192.168.1.1' %}
+                        </div>
+                        <div id="div_subnet_id" class="form-group col-md-12">
+                            {% include 'layout/text_field.html' with field=config_form.sub_netmask name='Sub Netmask' %}
+                        </div>
+                        <div id="div_getway_id" class="form-group col-md-12">
+                            {% include 'layout/text_field.html' with field=config_form.default_gateway name='Default Gateway' %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group col-md-12" id="ftp_path_id" style="visibility: hidden">
+                            {% include 'layout/text_field.html' with field=config_form.ftp_path name='مسیر FTP افراد ناشناس' placeholder='مسیر FTP افراد ناشناس' %}
+                        </div>
+                        <div class="form-group col-md-12" id="ftp_username" style="visibility: hidden">
+                            {% include 'layout/text_field.html' with field=config_form.ftp_username name='نام کاربری FTP' placeholder='نام کاربری FTP' %}
+                        </div>
+                        <div class="form-group col-md-12" id="ftp_password" style="visibility: hidden">
+                            {% include 'layout/text_field.html' with field=config_form.ftp_password name='رمز FTP' placeholder='رمز FTP' %}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary"> ذخیره <i
+                            class="icon-arrow-right14 position-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

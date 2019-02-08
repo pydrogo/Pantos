@@ -1,0 +1,84 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_erebor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+
+<!-- Content area -->
+{% block base_script %}
+    function allow_timeTemplate(data, type, row, meta) {
+        if (type == 'display') {
+                var allowed_url = '{% url 'schedule_time' '-10' %}'.replace('-10', data);
+                return '<a href="'+allowed_url+'" ><img src="/static/css/icons/clock.png" style="width: 35px"></a>';
+        }
+        return data;
+    }
+    function welcome_voiceTemplate(data, type, row, meta) {
+        if (type == 'display') {
+                return '<audio src="/media/'+data+'" controls></audio>' ;
+        }
+        return data;
+    }
+    function actionTemplateEdit(data, type, row, meta) {
+        if (type == 'display') {
+            var edit_group = '{% url 'group-edit' '-10' %}'.replace('-10', data);
+            return '{% if perms.auth.change_group %}<a href="'+edit_group+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a>{% endif %}';
+        }
+    return data;
+    }
+    function actionTemplateRemove(data, type, row, meta) {
+        if (type == 'display') {
+            var remove_group = '{% url 'group-remove' '-10' %}'.replace('-10', data);
+            return '{% if perms.auth.delete_group %}<a href="'+remove_group+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>{% endif %}';
+        }
+    return data;
+    }
+{% endblock %}
+
+
+{% block content %}
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">گروه</h5>
+            {% if perms.auth.add_group %}
+            <div class="heading-elements">
+                <a href='{% url 'create-group' %}' class="btn btn-primary">افزودن گروه جدید<i
+                        class="icon-plus3 position-right"></i></a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="panel panel-flat">
+        <table id="group-table" class="dataTable table frAdmin-datatable " data-url="{% url 'get-group-list' %}">
+            <thead class="table-options m--hide">
+            <tr>
+                <th class="table-column" data-field="name" data-template="nameTemplate">نام گروه</th>
+                <th class="table-column" data-field="welcome_voice" data-template="welcome_voiceTemplate">پیام صوتی</th>
+                <th class="table-column" data-field="active_rele_time" data-template="active_rele_timeTimeTemplate">
+                    مدت زمان فعال بودن رله
+                </th>
+
+                {% for alarm in alarm_list %}
+                    <th class="table-column" data-field="{{ alarm.name }}" data-template="booleanTemplateFrAdmin">{{ alarm.title }}</th>
+                {% endfor %}
+
+                <th class="table-column" data-field="id" data-template="allow_timeTemplate">ساعات مجاز</th>
+                <th class="table-column" data-field="id" data-template="actionTemplateEdit">ویرایش</th>
+                <th class="table-column" data-field="id" data-template="actionTemplateRemove">حذف</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <!-- /individual column searching (selects) -->
+{% endblock %}
+

@@ -1,0 +1,65 @@
+{% extends "layout/base.html" %}
+{% load static %}
+
+{% block base_content %}
+    {% if msg %}
+        <script>
+            window.alert('{{ msg }}');
+        </script>
+    {% endif %}
+    <!-- Main navbar -->
+    <div class="navbar navbar-default header-highlight">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="{% static 'images/logo_light.jpg' %}" alt=""></a>
+
+            <ul class="nav navbar-nav visible-xs-block">
+                <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
+                <li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar-mobile">
+            <ul class="nav navbar-nav">
+                <li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown dropdown-user">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <img style="background-attachment: inherit;" src="media/{{ request.user.UserProfile.image_profile }}" alt="">
+                        <span style="color: inherit ; font-size: 18px">{{ user.first_name }} {{ user.last_name }}</span>
+                        <i class="caret"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href='#'><i class="icon-user-plus"></i>پروفایل من</a></li>
+                        <li><a href='#'><i class="icon-cog5"></i> اطلاعات حساب</a></li>
+                        <li><a href="{% url 'logout' %}"><i class="icon-switch2"></i> خروج</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /main navbar -->
+
+
+    <!-- Page container -->
+    <div class="page-container">
+
+        <!-- Page content -->
+        <div class="page-content">
+            <!-- Main sidebar -->
+            {% include 'layout/menu.html' %}
+            <!-- /main sidebar -->
+            <!-- Main content -->
+            <div class="content-wrapper">
+                {% block content %}{% endblock %}
+            </div>
+            <!-- /main content -->
+        </div>
+        <!-- /page content -->
+    </div>
+    <!-- /page container -->
+
+
+{% endblock %}

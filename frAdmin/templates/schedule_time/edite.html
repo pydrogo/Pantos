@@ -1,0 +1,74 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_style %}
+    <link type="text/css" rel="stylesheet" href="{% static 'css/persian-date.css' %}"/>
+{% endblock %}
+
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_erebor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/schedule.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/vendor/date-converter.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vendor/persian-date/prsian-datepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vendor/persian-date/persian-date.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/schedule.js' %}"></script>
+
+{% endblock %}
+
+<!-- Content area -->
+
+{% block content %}
+    <script>
+        var time_list_value = {% autoescape off %}{{ time_list_value }}{% endautoescape %};
+    </script>
+
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class=" panel-heading">
+            <h5 class="panel-title">ویرایش زمانبندی هفتگی گروه : {{ group.name }}</h5>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+
+        <form method="post" action="" name="form1">
+            {% csrf_token %}
+            <div class="panel-body panel-body-accent ">
+                {% for item in time_list %}
+                    <div class="form-group row">
+                        <label class="col-lg-2 control-label">{{ item.date.day }}:</label>
+
+                        <label class="col-lg-1 control-label" for="start-{{ item.date.day_number }}">ساعت ورود:</label>
+                        <div class="col-lg-2">
+                            <input class="form-control only-timepicker-example-from"
+                                   id="start-{{ item.date.day_number }}" name="start-{{ item.date.day_number }}"
+                                   value="{{ item.start }}">
+                        </div>
+
+
+                        <div class="col-lg-2"></div>
+                        <label class="col-lg-1 control-label" for="end-{{ item.date.day_number }}">ساعت خروج:</label>
+                        <div class="col-lg-1">
+                            <input class="form-control only-timepicker-example-to" id="end-{{ item.date.day_number }}"
+                                   name="end-{{ item.date.day_number }}" value="{{ item.end }}">
+                        </div>
+                    </div>
+                    <hr>
+                    <input type="hidden" name="group_id" value="{{ item.group.id }}">
+                {% endfor %}
+                <button class="btn btn-primary" type="submit">ذخیره</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- /individual column searching (selects) -->
+{% endblock %}
+

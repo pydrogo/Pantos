@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+<div class="form-group {% if field.errors|length > 0 %}has-error{% endif %}">
+    <div class="col-lg-1">
+        <div class="checkbox">
+            <label>{% render_field field class+='styled' %}</label>
+        </div>
+        {% for error in field.errors %}<span class="help-block">{{error}}</span>{% endfor %}
+    </div>
+    <label class="col-lg-11 control-label">{{ name }}</label>
+
+</div>

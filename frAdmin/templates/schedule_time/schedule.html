@@ -1,0 +1,51 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_erebor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+
+<!-- Content area -->
+
+{% block content %}
+    {% block base_script %}
+    {% endblock %}
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+
+    <div class="panel panel-flat">
+
+        <div class="panel-heading">
+            <h5 class="panel-title">زمانبندی گروه :{{ group.name }}</h5>
+            {% if perms.web.change_authorizedtime %}
+            <div class="heading-elements">
+                <a href='{% url 'set_weekly_schedule' id=group.id %}' class="btn btn-primary">ویرایش هفتگی</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <table id="group-table" class="dataTable table frAdmin-datatable"
+               data-url="{% url 'get_schedule_time' id=group.id %}">
+            <thead class="table-options m--hide">
+            <tr>
+                {#                <th class="table-column" data-field="week_day" data-template="">روز</th>#}
+                <th class="table-column" data-field="date" data-template="">روز</th>
+                <th class="table-column" data-field="start" data-template="">ساعت ورود</th>
+                <th class="table-column" data-field="end" data-template="">ساعات خروج</th>
+{#                <th class="table-column" data-field="id" data-template="actionTemplate">Action</th>#}
+            </tr>
+            </thead>
+        </table>
+    </div>
+
+    <!-- /individual column searching (selects) -->
+
+{% endblock %}
+

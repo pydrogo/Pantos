@@ -1,0 +1,56 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_erebor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+
+<!-- Content area -->
+
+{% block content %}
+    {% if msg %}
+        <script>
+            window.alert('{{ msg }}');
+        </script>
+    {% endif %}
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">ویرایش {{ raspberry_name }} </h5>
+        </div>
+    </div>
+
+
+    <div class="panel panel-flat">
+        <div class="panel-body">
+            <form method="post" class="form-horizontal" ENCTYPE="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <input type="hidden" name="raspberry" id="raspberry" value="{{ raspberry.id }}">
+                <div class="row">
+                    <div class="col-md-6">
+                        {% include 'layout/text_field.html' with field=modem_form.ssid name='یوزرنیم'   placeholder='Username' %}
+                    </div>
+                    <div class="col-md-6">
+                        {% include 'layout/text_field.html' with field=modem_form.password name='رمزعبور'   placeholder='Password' %}
+                    </div>
+                </div>
+                <hr>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary"> ذخیره <i
+                            class="icon-arrow-right14 position-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- /individual column searching (selects) -->
+{% endblock %}

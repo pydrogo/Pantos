@@ -1,0 +1,8 @@
+{% load widget_tweaks %}
+<div class="form-group  {% if field.errors|length > 0 %}has-error{% endif %}">
+    <label class="col-lg-1 control-label">{{ title }}:</label>
+    <div class="col-lg-10">
+        <input type="time" class="form-control" name="{{ year }}{{ month }}{{ day }}" id="{{ year }}{{ month }}{{ day }}">
+        {% for error in field.errors %}<span class="help-block">{{error}}</span>{% endfor %}
+    </div>
+</div>

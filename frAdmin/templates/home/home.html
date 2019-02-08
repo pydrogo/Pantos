@@ -1,0 +1,464 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_dashboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+
+<!-- Content area -->
+{% block base_script %}
+
+
+{% endblock %}
+{% block content %}
+    <script>
+        function imageTemplate(data, type, row, meta) {
+            if (type == 'display') {
+                if (data) {
+                    return '<img style="width:45px;" src="/media/' + data + '">';
+                }
+                else {
+                    return '<p style="color: white">موجود نیست</p>';
+                }
+            }
+        }
+
+        function actionType(data, type, row, meta) {
+            if (type == 'display') {
+                if (data == 'ok') {
+                    return 'ورود موفق';
+                }
+                else if (data == 'unknown_user') {
+                    return 'کاربر تعریف نشده';
+                }
+                else if (data == 'unauthorized_time') {
+                    return 'زمان غیر مجاز';
+                }
+                else if (data == 'block_user') {
+                    return 'بلک لیست';
+                }
+                else if (data == 'max_request_exceed') {
+                    return 'تردد بیش از حد مجاز';
+                }
+            }
+        }
+    </script>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <!-- Available hours -->
+            <div class="panel text-center">
+                <div class="panel-body">
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li class="dropdown text-muted">
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="#"><i class="icon-sync"></i> Update data</a></li>
+                                    <li><a href="#"><i class="icon-list-unordered"></i> Detailed log</a>
+                                    </li>
+                                    <li><a href="#"><i class="icon-pie5"></i> Statistics</a></li>
+                                    <li><a href="#"><i class="icon-cross3"></i> Clear list</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Progress counter -->
+                    <div class="chart content-group-sm svg-center position-relative"
+                         id="hours-available-progress">
+                        <svg width="76" height="76">
+                            <g transform="translate(38,38)">
+                                <path class="d3-progress-background"
+                                      d="M0,38A38,38 0 1,1 0,-38A38,38 0 1,1 0,38M0,36A36,36 0 1,0 0,-36A36,36 0 1,0 0,36Z"
+                                      style="fill: rgb(238, 238, 238);"></path>
+                                <path class="d3-progress-foreground" filter="url(#blur)"
+                                      style="fill: rgb(240, 98, 146); stroke: rgb(240, 98, 146);"
+                                      d="M2.326828918379971e-15,-38A38,38 0 1,1 -34.38342799370878,16.179613079472677L-32.57377388877674,15.328054496342538A36,36 0 1,0 2.204364238465236e-15,-36Z"></path>
+                                <path class="d3-progress-front"
+                                      style="fill: rgb(240, 98, 146); fill-opacity: 1;"
+                                        {#                                      d="M2.326828918379971e-15,-38A38,38 0 1,1 -34.38342799370878,16.179613079472677L-32.57377388877674,15.328054496342538A36,36 0 1,0 2.204364238465236e-15,-36Z"></path>#}
+                                      d="M2.326828918379971e-15,-38A38,38 0 1,1 -34.3834279937087,-16.179613079472855L-32.573773888776664,-15.328054496342704A36,-36 0 1,0 2.204364238465236e-15,-36Z"></path>
+
+                            </g>
+                        </svg>
+                        <h2 class="mt-15 mb-5">{{ today_pass }}</h2><i
+                            class="icon-checkmark4 text-pink-400 counter-icon"
+                            style="top: 22px"></i>
+                        <div>ترددهای امروز</div>
+                        <div class="text-size-small text-muted"></div>
+                    </div>
+                    <!-- /progress counter -->
+
+
+                    <!-- Bars -->
+                    <div class="chart" id="hours-available-bars">
+                        <svg width="118.16665649414062" height="40">
+                            <g width="118.16665649414062">
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="1.4588476110387731"
+                                      style="fill: rgb(236, 64, 122);" height="38" y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="6.321672981168017"
+                                      style="fill: rgb(236, 64, 122);" height="28" y="12"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="11.184498351297261"
+                                      style="fill: rgb(236, 64, 122);" height="36" y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="16.047323721426505"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="20.91014909155575"
+                                      style="fill: rgb(236, 64, 122);" height="28" y="12"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="25.772974461684992"
+                                      style="fill: rgb(236, 64, 122);" height="28" y="12"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="30.635799831814236"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="35.498625201943476"
+                                      style="fill: rgb(236, 64, 122);" height="26" y="14"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="40.36145057207272"
+                                      style="fill: rgb(236, 64, 122);" height="34" y="6"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="45.22427594220196"
+                                      style="fill: rgb(236, 64, 122);" height="36" y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="50.08710131233121"
+                                      style="fill: rgb(236, 64, 122);" height="40" y="0"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="54.94992668246045"
+                                      style="fill: rgb(236, 64, 122);" height="40" y="0"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="59.812752052589694"
+                                      style="fill: rgb(236, 64, 122);" height="24" y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="64.67557742271894"
+                                      style="fill: rgb(236, 64, 122);" height="24" y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="69.53840279284819"
+                                      style="fill: rgb(236, 64, 122);" height="38" y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="74.40122816297743"
+                                      style="fill: rgb(236, 64, 122);" height="26" y="14"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="79.26405353310668"
+                                      style="fill: rgb(236, 64, 122);" height="38" y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="84.12687890323592"
+                                      style="fill: rgb(236, 64, 122);" height="24" y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="88.98970427336516"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="93.8525296434944"
+                                      style="fill: rgb(236, 64, 122);" height="26" y="14"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="98.71535501362365"
+                                      style="fill: rgb(236, 64, 122);" height="32" y="8"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="103.5781803837529"
+                                      style="fill: rgb(236, 64, 122);" height="20" y="20"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="108.44100575388214"
+                                      style="fill: rgb(236, 64, 122);" height="36" y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="113.30383112401138"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                            </g>
+                        </svg>
+                    </div>
+                    <!-- /bars -->
+
+                </div>
+            </div>
+            <!-- /available hours -->
+        </div>
+        <div class="col-md-4">
+
+            <!-- Productivity goal -->
+            <div class="panel text-center">
+                <div class="panel-body">
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li class="dropdown text-muted">
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="#"><i class="icon-sync"></i> Update data</a></li>
+                                    <li><a href="#"><i class="icon-list-unordered"></i> Detailed log</a>
+                                    </li>
+                                    <li><a href="#"><i class="icon-pie5"></i> Statistics</a></li>
+                                    <li><a href="#"><i class="icon-cross3"></i> Clear list</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Progress counter -->
+                    <div class="chart content-group-sm svg-center position-relative" id="goal-progress">
+                        <svg width="76" height="76">
+                            <g transform="translate(38,38)">
+                                <path class="d3-progress-background"
+                                      d="M0,38A38,38 0 1,1 0,-38A38,38 0 1,1 0,38M0,36A36,36 0 1,0 0,-36A36,36 0 1,0 0,36Z"
+                                      style="fill: rgb(238, 238, 238);"></path>
+                                <path class="d3-progress-foreground" filter="url(#blur)"
+                                      style="fill: rgb(92, 107, 192); stroke: rgb(92, 107, 192);"
+                                      d="M2.326828918379971e-15,-38A38,38 0 1,1 -34.3834279937087,-16.179613079472855L-32.573773888776664,-15.328054496342704A36,36 0 1,0 2.204364238465236e-15,-36Z"></path>
+                                <path class="d3-progress-front"
+                                      style="fill: rgb(92, 107, 192); fill-opacity: 1;"
+                                      d="M2.326828918379971e-15,-38A38,38 0 1,1 -34.3834279937087,-16.179613079472855L-32.573773888776664,-15.328054496342704A36,36 0 1,0 2.204364238465236e-15,-36Z"></path>
+
+                            </g>
+                        </svg>
+                        <h2 class="mt-15 mb-5">{{ unauthorized_user }}</h2><i
+                            class="icon-minus-circle2 text-indigo-400 counter-icon"
+                            style="top: 22px"></i>
+                        <div>تردد های غیر مجاز</div>
+                        <div class="text-size-small text-muted"></div>
+                    </div>
+                    <!-- /progress counter -->
+
+                    <!-- Bars -->
+                    <div class="chart" id="goal-bars">
+                        <svg width="118.16667175292969" height="40">
+                            <g>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="1.4588477994188849" style="fill: rgb(92, 107, 192);" height="38"
+                                      y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="6.321673797481834" style="fill: rgb(92, 107, 192);" height="40"
+                                      y="0"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="11.184499795544784" style="fill: rgb(92, 107, 192);" height="24"
+                                      y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="16.047325793607733" style="fill: rgb(92, 107, 192);" height="36"
+                                      y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="20.910151791670682" style="fill: rgb(92, 107, 192);" height="32"
+                                      y="8"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="25.77297778973363" style="fill: rgb(92, 107, 192);" height="36"
+                                      y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="30.635803787796583" style="fill: rgb(92, 107, 192);" height="36"
+                                      y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="35.49862978585953" style="fill: rgb(92, 107, 192);" height="36"
+                                      y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="40.36145578392248" style="fill: rgb(92, 107, 192);" height="34"
+                                      y="6"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="45.22428178198543" style="fill: rgb(92, 107, 192);" height="24"
+                                      y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="50.08710778004838" style="fill: rgb(92, 107, 192);" height="30"
+                                      y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="54.94993377811133" style="fill: rgb(92, 107, 192);" height="38"
+                                      y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="59.81275977617428" style="fill: rgb(92, 107, 192);" height="30"
+                                      y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="64.67558577423723" style="fill: rgb(92, 107, 192);" height="26"
+                                      y="14"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="69.53841177230018" style="fill: rgb(92, 107, 192);" height="34"
+                                      y="6"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="74.40123777036314" style="fill: rgb(92, 107, 192);" height="30"
+                                      y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="79.26406376842608" style="fill: rgb(92, 107, 192);" height="36"
+                                      y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="84.12688976648903" style="fill: rgb(92, 107, 192);" height="24"
+                                      y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="88.98971576455199" style="fill: rgb(92, 107, 192);" height="38"
+                                      y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="93.85254176261493" style="fill: rgb(92, 107, 192);" height="38"
+                                      y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="98.71536776067788" style="fill: rgb(92, 107, 192);" height="24"
+                                      y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="103.57819375874084" style="fill: rgb(92, 107, 192);" height="36"
+                                      y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="108.44101975680378" style="fill: rgb(92, 107, 192);" height="28"
+                                      y="12"></rect>
+                                <rect class="d3-random-bars" width="3.4039781986440647"
+                                      x="113.30384575486673" style="fill: rgb(92, 107, 192);" height="32"
+                                      y="8"></rect>
+                            </g>
+                        </svg>
+                    </div>
+                    <!-- /bars -->
+
+                </div>
+            </div>
+            <!-- /productivity goal -->
+
+        </div>
+        <div class="col-md-4">
+            <!-- Available hours -->
+            <div class="panel text-center">
+                <div class="panel-body">
+                    <div class="heading-elements">
+                        <ul class="icons-list">
+                            <li class="dropdown text-muted">
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="#"><i class="icon-sync"></i> Update data</a></li>
+                                    <li><a href="#"><i class="icon-list-unordered"></i> Detailed log</a>
+                                    </li>
+                                    <li><a href="#"><i class="icon-pie5"></i> Statistics</a></li>
+                                    <li><a href="#"><i class="icon-cross3"></i> Clear list</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Progress counter -->
+                    <div class="chart content-group-sm svg-center position-relative"
+                         id="hours-available-progress">
+                        <svg width="76" height="76">
+                            <g transform="translate(38,38)">
+                                <path class="d3-progress-background"
+                                      d="M0,38A38,38 0 1,1 0,-38A38,38 0 1,1 0,38M0,36A36,36 0 1,0 0,-36A36,36 0 1,0 0,36Z"
+                                      style="fill: rgb(238, 238, 238);"></path>
+                                <path class="d3-progress-foreground" filter="url(#blur)"
+                                      style="fill: rgb(240, 98, 146); stroke: rgb(240, 98, 146);"
+                                      d="M2.326828918379971e-15,-38A38,38 0 1,1 -34.38342799370878,16.179613079472677L-32.57377388877674,15.328054496342538A36,36 0 1,0 2.204364238465236e-15,-36Z"></path>
+                                <path class="d3-progress-front"
+                                      style="fill: rgb(240, 98, 146); fill-opacity: 1;"
+                                      d="M2.326828918379971e-15,-38A38,38 0 1,1 -34.38342799370878,16.179613079472677L-32.57377388877674,15.328054496342538A36,36 0 1,0 2.204364238465236e-15,-36Z"></path>
+                            </g>
+                        </svg>
+                        <h2 class="mt-15 mb-5">{{ blocked_pass }}</h2><i class="icon-watch text-pink-400 counter-icon"
+                                                                         style="top: 22px"></i>
+                        <div>ترددهای بلاک</div>
+                        <div class="text-size-small text-muted"></div>
+                    </div>
+                    <!-- /progress counter -->
+
+
+                    <!-- Bars -->
+                    <div class="chart" id="hours-available-bars">
+                        <svg width="118.16665649414062" height="40">
+                            <g width="118.16665649414062">
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="1.4588476110387731"
+                                      style="fill: rgb(236, 64, 122);" height="38" y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="6.321672981168017"
+                                      style="fill: rgb(236, 64, 122);" height="28" y="12"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="11.184498351297261"
+                                      style="fill: rgb(236, 64, 122);" height="36" y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="16.047323721426505"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="20.91014909155575"
+                                      style="fill: rgb(236, 64, 122);" height="28" y="12"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="25.772974461684992"
+                                      style="fill: rgb(236, 64, 122);" height="28" y="12"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="30.635799831814236"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="35.498625201943476"
+                                      style="fill: rgb(236, 64, 122);" height="26" y="14"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="40.36145057207272"
+                                      style="fill: rgb(236, 64, 122);" height="34" y="6"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="45.22427594220196"
+                                      style="fill: rgb(236, 64, 122);" height="36" y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="50.08710131233121"
+                                      style="fill: rgb(236, 64, 122);" height="40" y="0"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="54.94992668246045"
+                                      style="fill: rgb(236, 64, 122);" height="40" y="0"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="59.812752052589694"
+                                      style="fill: rgb(236, 64, 122);" height="24" y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="64.67557742271894"
+                                      style="fill: rgb(236, 64, 122);" height="24" y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="69.53840279284819"
+                                      style="fill: rgb(236, 64, 122);" height="38" y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="74.40122816297743"
+                                      style="fill: rgb(236, 64, 122);" height="26" y="14"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="79.26405353310668"
+                                      style="fill: rgb(236, 64, 122);" height="38" y="2"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="84.12687890323592"
+                                      style="fill: rgb(236, 64, 122);" height="24" y="16"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="88.98970427336516"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="93.8525296434944"
+                                      style="fill: rgb(236, 64, 122);" height="26" y="14"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="98.71535501362365"
+                                      style="fill: rgb(236, 64, 122);" height="32" y="8"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="103.5781803837529"
+                                      style="fill: rgb(236, 64, 122);" height="20" y="20"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="108.44100575388214"
+                                      style="fill: rgb(236, 64, 122);" height="36" y="4"></rect>
+                                <rect class="d3-random-bars" width="3.4039777590904703"
+                                      x="113.30383112401138"
+                                      style="fill: rgb(236, 64, 122);" height="30" y="10"></rect>
+                            </g>
+                        </svg>
+                    </div>
+                    <!-- /bars -->
+
+                </div>
+            </div>
+            <!-- /available hours -->
+        </div>
+    </div>
+    <div class="panel panel-flat">
+
+        <div class="row">
+            <table id="group-table" class="dataTable table frAdmin-dashboard-datatable"
+                   data-url="{% url 'get_dashboard_log_list' %}">
+                <thead class="table-options m--hide">
+                <tr>
+                    <th class="table-column" data-field="username__username" data-template="">نام کاربری</th>
+                    <th class="table-column" data-field="username__UserProfile__last_snapshot"
+                        data-template="imageTemplate">اخرین عکس
+                    </th>
+                    <th class="table-column" data-field="date" data-template="persianDateTimeTemplate">تاریخ</th>
+                    <th class="table-column" data-field="action" data-template="actionType">نوع</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+{% endblock %}
+
+

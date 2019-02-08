@@ -1,0 +1,96 @@
+{% load static %}
+<div class="sidebar sidebar-main">
+    <div class="sidebar-content">
+        <!-- User menu -->
+        <div class="sidebar-user-material">
+            <div class="category-content">
+                <div class="sidebar-user-material-content">
+                    {{ user.first_name }} {{ user.last_name }}
+                </div>
+            </div>
+        </div>
+        <!-- /user menu -->
+        <!-- Main navigation -->
+        <div class="sidebar-category sidebar-category-visible">
+            <div class="category-content no-padding">
+                <ul class="navigation navigation-main navigation-accordion">
+                    <!-- Main -->
+                    {#                    <li class="navigation-header"><span>خانه</span> <i class="icon-menu" title="Main pages"></i>#}
+                    </li>
+                    {% if user.is_superuser %}
+                        <li><a href="/admin"><i class="icon-home4"></i><span>پنل ادمین</span></a></li>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        <li class="{% block menu_web_class %}{% endblock %}"><a href='{% url 'home' %}'><i
+                                class="icon-home4"></i>
+                            <span>صفحه اصلی</span></a>
+                        </li>
+                    {% endif %}
+
+                    <li class="">
+                        <a href="#"><i class="icon-users4"></i><span>گروه ها</span></a>
+                        <ul>
+                            <li><a href='{% url 'group' %}'>لیست</a></li>
+                            {% if perms.auth.add_group %}
+                                <li><a href='{% url 'create-group' %}'>اضافه کردن</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </li>
+
+                    <li class="">
+                        <a href="#"><i class="icon-user"></i><span>کاربر ها</span></a>
+
+                        <ul>
+                            <li><a href='{% url 'user_list' %}'>لیست</a></li>
+                            {% if perms.web.add_userprofile %}
+                                <li><a href='{% url 'create_user' %}'>اضافه کردن</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <li class="">
+                        <a href="#"><i class="icon-video-camera2"></i><span>دوربین</span></a>
+                        <ul>
+                            <li><a href='{% url 'camera' %}'>لیست</a></li>
+                            {% if perms.web.add_camera %}
+                                <li><a href='{% url 'create-camera' %}'>اضافه کردن</a></li>
+                            {% endif %}
+                            <li><a href='{% url 'select_camera' %}'>فعال سازی</a></li>
+                        </ul>
+                    </li>
+                    {#                    <li class="">#}
+                    {#                        <a href="#"><i class="icon-video-camera2"></i><span>مودم</span></a>#}
+                    {#                        <ul>#}
+                    {#                            <li><a href='{% url 'modem' %}'>لیست</a></li>#}
+                    {#                        </ul>#}
+                    {#                    </li>#}
+                    {#                    <li class="">#}
+                    {#                        <a href="#"><i class="icon-video-camera2"></i><span>رزبری</span></a>#}
+                    {#                        <ul>#}
+                    {#                            <li><a href='{% url 'raspberry' %}'>لیست</a></li>#}
+                    {#                        {% if perms.web.add_raspberry %}#}
+                    {#                            <li><a href='{% url 'create-raspberry' %}'>اضافه کردن</a></li>#}
+                    {#                        </ul>#}
+                    {##}
+                    {#                        {% endif %}#}
+                    {#                    </li>#}
+                    {% if perms.web.change_raspberry %}
+                        <li class="">
+                            <a href="{% url 'raspberry_config' %}"><i class=" icon-gear"></i><span>تنظیمات</span></a>
+                        </li>
+                        <li class="">
+                            <a href="{% url 'raspberry_wifi' %}"><i
+                                    class="icon-connection"></i><span>اتصال به WiFi</span></a>
+                        </li>
+                        <li class="">
+                            <a href=""><i
+                                    class="icon-info22"></i><span>درباره ما</span></a>
+                        </li>
+                    {% endif %}
+                    <!-- /main -->
+                </ul>
+            </div>
+        </div>
+        <!-- /main navigation -->
+    </div>
+</div>

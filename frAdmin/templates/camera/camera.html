@@ -1,0 +1,73 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_erebor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+
+<!-- Content area -->
+{% block base_script %}
+    function StatusTemplate(data, type, row, meta) {
+        if (type == 'display') {
+            if(data=true){
+                return '<h3 style="color:green">فعال</h3>' ;
+            }
+            return '<h3 style="color:red">غیر فعال</h3>' ;
+        }
+    return data;
+    }
+
+    function actionTemplateEdit(data, type, row, meta) {
+        if (type == 'display') {
+            var edit_camera = '{% url 'camera-edit' '-10' %}'.replace('-10', data);
+            return '{% if perms.web.change_camera %}<a href="'+edit_camera+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a>{% endif %}';
+        }
+    return data;
+    }
+    function actionTemplateRemove(data, type, row, meta) {
+        if (type == 'display') {
+            var remove_camera = '{% url 'camera-remove' '-10' %}'.replace('-10', data);
+            return '{% if perms.web.delete_camera %}<a href="'+remove_camera+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>{% endif %}';
+        }
+    return data;
+    }
+{% endblock %}
+
+
+{% block content %}
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">دوربین</h5>
+             {% if perms.web.add_camera %}
+            <div class="heading-elements">
+                <a href='{% url 'create-camera' %}' class="btn btn-primary"> افزودن دوربین <i class="icon-plus3 position-right"></i></a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="panel panel-flat">
+        <table id="group-table" class="dataTable table frAdmin-datatable" data-url="{% url 'get_camera_list' %}">
+            <thead class="table-options m--hide">
+            <tr>
+                <th class="table-column" data-field="name" data-template="">نام </th>
+                <th class="table-column" data-field="ip" data-template="">آی پی </th>
+                <th class="table-column" data-field="username" data-template="">نام کاربری</th>
+                <th class="table-column" data-field="password" data-template="">رمز</th>
+                <th class="table-column" data-field="id" data-template="actionTemplateEdit">ویرایش</th>
+                <th class="table-column" data-field="id" data-template="actionTemplateRemove">حذف</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <!-- /individual column searching (selects) -->
+{% endblock %}
+

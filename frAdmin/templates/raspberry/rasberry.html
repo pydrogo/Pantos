@@ -1,0 +1,70 @@
+{% extends "layout/page_headless.html" %}
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
+
+
+{% endblock %}
+
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/common/datatables_erebor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+
+<!-- Content area -->
+{% block base_script %}
+    {% if msg %}
+        alert('{{ msg }}');
+    {% endif %}
+{#    function StatusTemplate(data, type, row, meta) {#}
+{#        if (type == 'display') {#}
+{#            if(data=true){#}
+{#                return '<h3 style="color:green">فعال</h3>' ;#}
+{#            }#}
+{#            return '<h3 style="color:red">غیر فعال</h3>' ;#}
+{#        }#}
+{#    return data;#}
+{#    }#}
+    function actionTemplate(data, type, row, meta) {
+        if (type == 'display') {
+            var add_modem = '{% url 'create_modem' '-10' %}'.replace('-10', data);
+            var edit_raspberry = '{% url 'raspberry-edit' '-10' %}'.replace('-10', data);
+            var remove_raspberry = '{% url 'raspberry-remove' '-10' %}'.replace('-10', data);
+            return '<a href="'+add_modem+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-blue" ><i class="icon-pencil"></i></a> \
+                    <a href="'+edit_raspberry+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a> \
+                    <a href="'+remove_raspberry+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>';
+        }
+    return data ;
+    }
+{% endblock %}
+
+
+{% block content %}
+    <!-- Individual column searching (selects) -->
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">رزبری</h5>
+            <div class="heading-elements">
+                <a href='{% url 'create-raspberry' %}' class="btn btn-primary"> افزودن Raspberry <i class="icon-plus3 position-right"></i></a>
+            </div>
+        </div>
+
+        <table id="group-table" class="dataTable table frAdmin-datatable" data-url="{% url 'get_raspberry_list' %}">
+            <thead class="table-options m--hide">
+            <tr>
+                <th class="table-column" data-field="name" data-template="">نام </th>
+                <th class="table-column" data-field="ip" data-template="">آی پی </th>
+                <th class="table-column" data-field="status" data-template="enabledTemplate">وضعیت</th>
+                <th class="table-column" data-field="sub_netmask" data-template="">پوشش زیر شبکه</th>
+                <th class="table-column" data-field="default_gateway" data-template="">ورودی پیش فرض</th>
+                <th class="table-column" data-field="dhcp" data-template="enabledTemplate">dhcp</th>
+                <th class="table-column" data-field="id" data-template="actionTemplate">حذف/ویرایش</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <!-- /individual column searching (selects) -->
+{% endblock %}
+

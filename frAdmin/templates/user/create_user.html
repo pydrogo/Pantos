@@ -1,0 +1,133 @@
+{% extends "layout/page_headless.html" %}
+{% load widget_tweaks %}
+
+{% load static %}
+{% block base_style %}
+    <style type="text/css">
+        iframe {
+            transform: scale(1, 1);
+            height: 355px;
+            width: 505px;
+        }
+    </style>
+{% endblock %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/visualization/d3/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/visualization/d3/d3_tooltip.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/styling/switchery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/styling/uniform.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/bootstrap_multiselect.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/moment/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/pickers/daterangepicker.js' %}"></script>
+{% endblock %}
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/pages/dashboard.js' %}"></script>
+
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/User.js' %}"></script>
+    <script type="text/javascript">
+        {% if user_row %}
+            document.getElementById('username_validation_error').style.visibility = "visible";
+        {% else %}
+            document.getElementById('username_validation_error').style.visibility = "hidden";
+        {% endif %}
+        var frameUrl = '{% url 'stream' %}'
+    </script>
+{% endblock %}
+<!-- Content area -->
+{% block content %}
+
+
+    <div class="modal fade " role="dialog" id="modal_stream">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body" id="modal_body_stream">
+                    <input type="hidden" id="input_select_camera">
+                    <div id="stream-div">
+                        <iframe id="stream-frame"
+                                src="">
+                        </iframe>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="snapshot_btn" onclick="snapshot()"> گرفتن عکس
+                        <i class="icon-arrow-right14 position-right"></i></button>
+                    <div class="col-md-12" id="show_modal_images">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">افزودن کاربر جدید </h5>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+
+        <div class="panel-body">
+            <div class="col-md-6">
+                {#--------------------------------------------------------------------------------------#}
+                <select style="color: black; background-color: white; height: 37px; border-radius: 2px 2px;" id="select_camera_stream">
+                    {% for item in camera_list %}
+                        <option value="{{ item.id }}"> {{ item.name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="col-md-3">
+                    <button type="submit" onclick="snapshot_model()" class="btn bg-violet ">گرفتن عکس<i
+                            class="icon-arrow-down-left32 position-left"></i></button>
+                </div>
+                <span class="col-md-2"></span>
+                {#--------------------------------------------------------------------------------------#}
+            </div>
+
+            <br><br><br>
+            <form method="post" class="form-horizontal" id="user_create_form" ENCTYPE="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-group" id="user_form">
+                    {% include 'layout/user_text_filed.html' with field=userform.username name='شماره ملی' placeholder='نام کاربری' %}
+                    <span class="col-md-2"></span><span id="username_validation_error"
+                                                        style="color: yellow; visibility: hidden">⚠️لطفا فقط عدد 10 رقمی وارد نمایید⚠️</span>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">رمز عبور :</label>
+                        <div class="col-lg-10">
+                            <input type="password" class="form-control" placeholder="Password"
+                                   id="password" name="password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">تکرار رمز عبور :</label>
+                        <div class="col-lg-10">
+                            <input type="password" class="form-control" placeholder="Confirm password"
+                                   id="confirm_pass">
+                        </div>
+                    </div>
+
+                    {% include 'layout/user_text_filed.html' with field=userform.first_name name='نام' placeholder='FirstName' %}
+                    {% include 'layout/user_text_filed.html' with field=userform.last_name name='نام خانوادگی' placeholder='LastName' %}
+                    {% include 'layout/user_text_filed.html' with field=userform.email name='ایمیل' placeholder='Email' %}
+                    {% include 'layout/user_text_filed.html' with field=userprofileform.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
+                    {% include 'layout/intiger_field.html' with field=userprofileform.mobile name='شماره همراه' placeholder='Mobile Number' %}
+                    {% include 'layout/user_checkbox_field.html' with field=userprofileform.black_list name='بلاک' %}
+                    {% include 'layout/drop_down_field.html' with field=userprofileform.group name='گروه' placeholder='Group' %}
+                    {% include 'layout/integer_pass_field.html' with field=userprofileform.pass_limitation name='محدودیت تردد در روز' placeholder='Pass Limitation' %}
+                    {% include 'layout/upload_field.html' with field=imageform.profile_image func='show_dataset_pic()' name='تصاویر تشخیص چهره' placeholder='Face recognition images' %}
+                    <div class="col-md-12" id="show_images">
+                    </div>
+                    <div id="dataset_pic_div"></div>
+                    {% include 'layout/single_upload_field.html' with field=userprofileform.image_profile func='show_profile_pic()' name='تصویر پروفایل' placeholder='Profile Image' %}
+                    <div id="profile_pic_div"></div>
+                </div>
+                <hr>
+                <input name="row_id" id="row_id" type="hidden" value="">
+            </form>
+            <div class="text-right">
+                <button class="btn btn-primary" onclick="pass_validation()"> ذخیره <i
+                        class="icon-move-left position-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

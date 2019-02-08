@@ -1,0 +1,6 @@
+.btn-frAdmin-mini{
+    padding: 13px !important;
+}
+ul.breadcrumb li:nth-child(even) a {
+    color: #ab9f9f;
+}

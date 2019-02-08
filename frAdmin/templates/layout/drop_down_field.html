@@ -1,0 +1,8 @@
+{% load widget_tweaks %}
+<div class="form-group {% if field.errors|length > 0 %}has-error{% endif %}">
+    <label class="col-lg-2 control-label">{{ name }}:</label>
+    <div class="col-lg-10">
+        {% render_field field class+="form-control" style+="color:white;" %}
+        {% for error in field.errors %}<span class="help-block">{{ error }}</span>{% endfor %}
+    </div>
+</div>

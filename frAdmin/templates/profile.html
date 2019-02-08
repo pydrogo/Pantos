@@ -1,0 +1,126 @@
+{% extends "layout/page.html" %}
+{% load static %}
+{% block body_class %}has-detached-left{% endblock %}
+{% block base_pre_script %}
+<script type="text/javascript" src="{% static 'js/core/libraries/jasny_bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/plugins/forms/styling/uniform.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/plugins/ui/moment/moment.min.js' %}"></script>
+{% endblock %}
+{% block base_post_script %}
+<script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+{% block page_header_title %}<i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">User Pages</span> - Profile{% endblock %}
+{% block breadcrumbs %}
+{% autoescape off %}
+{{ block.super }}
+{% breadcrumb_item 'Profile' '/profile' True %}
+{% endautoescape %}
+{% endblock %}
+{% block content %}
+<!-- Detached sidebar -->
+<div class="sidebar-detached">
+    <div class="sidebar sidebar-default sidebar-separate">
+        <div class="sidebar-content">
+
+            <!-- User details -->
+            <div class="content-group">
+                <div class="panel-body bg-indigo-400 border-radius-top text-center"
+                     style="background-image: url(http://demo.interface.club/limitless/assets/images/bg.png); background-size: contain;">
+                    <div class="content-group-sm">
+                        <h6 class="text-semibold no-margin-bottom">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </h6>
+
+                        <span class="display-block">{{ user.username }}</span>
+                    </div>
+
+                    <a href="#" class="display-inline-block content-group-sm">
+                        <img src="{% static 'images/placeholder.jpg' %}" class="img-circle img-responsive" alt="" style="width: 110px; height: 110px;">
+                    </a>
+
+
+                </div>
+
+                <div class="panel no-border-top no-border-radius-top">
+                    <ul class="navigation">
+                        <li class="navigation-header">Navigation</li>
+                        <li class="active"><a href="#profile" data-toggle="tab"><i class="icon-files-empty"></i> Profile</a></li>
+                        <li><a href="#" data-toggle="tab"><i class="icon-files-empty"></i> Account settings </a></li>
+                        <li><a href="#" data-toggle="tab"><i class="icon-files-empty"></i> Inbox <span class="badge bg-warning-400">23</span></a></li>
+                        <li class="navigation-divider"></li>
+                        <li><a href="'{% url 'logout' %}'"><i class="icon-switch2"></i> Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /user details -->
+        </div>
+    </div>
+</div>
+<!-- /detached sidebar -->
+
+<!-- Detached content -->
+<div class="container-detached">
+    <div class="content-detached">
+
+        <!-- Tab content -->
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="profile">
+                <!-- Profile info -->
+                <div class="panel panel-flat">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">Profile information</h6>
+                    </div>
+
+                    <div class="panel-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Username</label>
+                                        <input type="text" value="{{ user.username }}" class="form-control" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Full name</label>
+                                        <input type="text" value="{{ user.first_name }} {{ user.last_name }}" class="form-control" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                        <input type="text" readonly="readonly" value="{{ user.email }}" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Last Login : </label>
+{#                                        <input type="text" value=''  readonly="readonly" class="form-control">#}
+                                        <label id="lastlogin"></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <!-- /profile info -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Detached content -->
+
+
+{% endblock %}
+
+{% block base_script %}
+    $(document).ready(function(){
+        $('#lastlogin').html(new Date('{{ user.last_login }}').toPersianDate().format('YYYY/MM/DD HH:mm:ss'));
+    });
+{% endblock %}

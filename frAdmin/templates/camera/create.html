@@ -1,0 +1,40 @@
+{% extends "layout/page_headless.html" %}
+{% load widget_tweaks %}
+
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/camera.js' %}"></script>
+
+{% endblock %}
+{% block base_post_script %}
+    <script type="text/javascript" src="{% static 'js/pages/dashboard.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+<!-- Content area -->
+{% block content %}
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">افزودن دوربین جدید </h5>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+        <div class="panel-body">
+            <form method="post" name="form1" id="form1" action="" class="form-horizontal" ENCTYPE="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                {% include 'layout/text_field.html' with field=camera_form.name name='نام دوربین' placeholder='نام دوربین' %}
+                {% include 'layout/text_field.html' with field=camera_form.ip name='آی پی دوربین' placeholder='برای مثال 192.168.1.1' %}
+                {% include 'layout/text_field.html' with field=camera_form.username name='نام کاربری دوربین' placeholder='نام دوربین' %}
+                {% include 'layout/text_field.html' with field=camera_form.password name='رمز عبور دوربین' placeholder='رمز دوربین' %}
+            </form>
+
+            <div class="text-right">
+                <button onclick="submitform()" class="btn btn-primary"> ذخیره <i
+                        class="icon-move-left position-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

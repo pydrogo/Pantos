@@ -1,0 +1,156 @@
+{% extends "layout/page_headless.html" %}
+{% load widget_tweaks %}
+
+{% load static %}
+{% block base_pre_script %}
+    <script type="text/javascript" src="{% static 'js/plugins/visualization/d3/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/visualization/d3/d3_tooltip.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/styling/switchery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/styling/uniform.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/forms/selects/bootstrap_multiselect.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/ui/moment/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plugins/pickers/daterangepicker.js' %}"></script>
+{% endblock %}
+{% block base_post_script %}
+
+    <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
+{% endblock %}
+<!-- Content area -->
+{% block content %}
+    <div><br></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">افزودن گروه کاربری جدید </h5>
+        </div>
+    </div>
+    <div class="panel panel-flat">
+        <div class="panel-body">
+            <form method="post" class="form-horizontal" ENCTYPE="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <fieldset class="content-group">
+                    <legend class="text-bold" style="font-size: 20px;color: inherit">مشخصات گروه</legend>
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% include 'layout/text_field.html' with field=group_form.name name='نام گروه' placeholder='نام گروه' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            {% include 'layout/text_field.html' with field=group_form.active_rele_time name='مدت زمان باز بودن رله (ثانیه)' placeholder='مدت زمان باز بودن رله' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="col-lg-2 control-label">پیغام خوش آمدگویی صوتی:</label>
+                        <div class="col-lg-10 uploader">
+                            {% render_field group_form.welcome_voice class+="colpmd-10 form-control file-styled-primary" class+=cssClass accept='audio/*' %}
+                            <span class="action btn bg-blue legitRipple" style="user-select: none;">Choose File</span>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="content-group">
+                    <legend class="text-bold" style="font-size: 20px;color: inherit">آلارم های این گروه</legend>
+                    <div class="row">
+                        {% for item in alarm_list %}
+                            <div class="col-md-4">
+                                <div class="checkbox col-lg-1">
+                                    <input type="checkbox" id="{{ item.name }}" name="{{ item.name }}" class="styled">
+                                </div>
+                                <label class=" control-label col-lg-11">{{ item.title }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                {#################################################################################################################################}
+                <fieldset class="content-group">
+                    <legend class="text-bold " style="font-size: 20px;color: inherit">دسترسی های گروه</legend>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="add_userprofile" name="add_userprofile" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">تعریف کاربر</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="change_userprofile" name="change_userprofile" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">ویرایش کاربر</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="delete_userprofile" name="delete_userprofile" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">حذف کاربر</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="add_group" name="add_group" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">تعریف گروه</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="change_group" name="change_group" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">ویرایش گروه</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="delete_group" name="delete_group" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">حذف گروه</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="add_camera" name="add_camera" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">تعریف دوربین</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="change_camera" name="change_camera" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">ویرایش دوربین</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="delete_camera" name="delete_camera" class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">حذف دوربین</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="change_authorizedtime" name="change_authorizedtime"
+                                       class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">ویرایش زمانبندی</label>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="checkbox col-lg-1">
+                                <input type="checkbox" id="change_raspberry" name="change_raspberry"
+                                       class="styled">
+                            </div>
+                            <label class=" control-label col-lg-11">ویرایش رزبری</label>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary"> ذخیره <i
+                            class="icon-move-left position-right"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
