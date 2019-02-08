@@ -2,6 +2,7 @@
 {% load static %}
 {% block base_style %}
     <link type="text/css" rel="stylesheet" href="{% static 'css/persian-date.css' %}"/>
+    <link href="{% static 'css/pantos.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block base_pre_script %}
@@ -55,7 +56,7 @@
 
                         <div class="col-lg-2"></div>
                         <label class="col-lg-1 control-label" for="end-{{ item.date.day_number }}">ساعت خروج:</label>
-                        <div class="col-lg-1">
+                        <div class="col-lg-2">
                             <input class="form-control only-timepicker-example-to" id="end-{{ item.date.day_number }}"
                                    name="end-{{ item.date.day_number }}" value="{{ item.end }}">
                         </div>
@@ -63,7 +64,7 @@
                     <hr>
                     <input type="hidden" name="group_id" value="{{ item.group.id }}">
                 {% endfor %}
-                <button class="btn btn-primary" type="submit">ذخیره</button>
+                <button class="btn save-btn" type="submit">ذخیره</button>
             </div>
 
         </form>

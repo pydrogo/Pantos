@@ -21,8 +21,6 @@
     <script type="text/javascript" src="{% static 'js/plugins/pickers/daterangepicker.js' %}"></script>
 {% endblock %}
 {% block base_post_script %}
-    <script type="text/javascript" src="{% static 'js/pages/dashboard.js' %}"></script>
-
     <script type="text/javascript" src="{% static 'js/plugins/ui/ripple.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/User.js' %}"></script>
     <script type="text/javascript">
@@ -38,24 +36,25 @@
 {% block content %}
 
 
-    <div class="modal fade " role="dialog" id="modal_stream">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body" id="modal_body_stream">
-                    <input type="hidden" id="input_select_camera">
-                    <div id="stream-div">
-                        <iframe id="stream-frame"
-                                src="">
-                        </iframe>
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="snapshot_btn" onclick="snapshot()"> گرفتن عکس
-                        <i class="icon-arrow-right14 position-right"></i></button>
-                    <div class="col-md-12" id="show_modal_images">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{#    <div class="modal fade " role="dialog" id="modal_stream">#}
+{#        <div class="modal-dialog">#}
+{#            <div class="modal-content">#}
+{#                <div class="modal-body" id="modal_body_stream">#}
+{#                    <input type="hidden" id="input_select_camera">#}
+{#                    <div id="stream-div">#}
+{#                        <iframe id="stream-frame"#}
+{#                                src="">#}
+{#                        </iframe>#}
+{#                    </div>#}
+{#                    <button type="submit" class="btn save-btn" id="snapshot_btn" onclick="snapshot()"> گرفتن عکس#}
+{#                        <i class="icon-arrow-right14 position-right"></i></button>#}
+{#                    #}
+{#                    <div class="col-md-12" id="show_modal_images">#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 
     <br>
@@ -124,7 +123,7 @@
                 <input name="row_id" id="row_id" type="hidden" value="">
             </form>
             <div class="text-right">
-                <button class="btn btn-primary" onclick="pass_validation()"> ذخیره <i
+                <button class="btn save-btn" onclick="pass_validation()"> ذخیره <i
                         class="icon-move-left position-right"></i></button>
             </div>
         </div>

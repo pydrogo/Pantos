@@ -24,7 +24,7 @@
     function actionTemplateEdit(data, type, row, meta) {
         if (type == 'display') {
             var edit_user = '{% url 'edit_user' '-10' %}'.replace('-10', data);
-            return '{% if perms.web.change_userprofile %}<a href="'+edit_user+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a>{% endif %}';
+            return '{% if perms.web.change_userprofile %}<a href="'+edit_user+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini edit-btn" ><i class="icon-pencil"></i></a>{% endif %}';
         }
     return data;
     }
@@ -32,14 +32,14 @@
     function actionTemplateLog(data, type, row, meta) {
         if (type == 'display') {
             var log_list = '{% url 'user_log' '-10' %}'.replace('-10', data);
-            return '{% if perms.web.userprofile_list %}<a href="'+log_list+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-grey"><i class="icon-clapboard"></i></a>{% endif %}';
+            return '{% if perms.web.userprofile_list %}<a href="'+log_list+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini log-btn"><i class="icon-clapboard"></i></a>{% endif %}';
         }
     return data;
     }
     function actionTemplateRemove(data, type, row, meta) {
         if (type == 'display') {
             var remove_user = '{% url 'delete_user' '-10' %}'.replace('-10', data);
-            return '{% if perms.web.delete_userprofile %}<a href="'+remove_user+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>{% endif %}';
+            return '{% if perms.web.delete_userprofile %}<a href="'+remove_user+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini reset-btn"><i class="icon-database-remove"></i></a>{% endif %}';
         }
     return data;
     }
@@ -54,7 +54,7 @@
             <h5 class="panel-title">کاربران</h5>
             {% if perms.web.add_userprofile %}
             <div class="heading-elements">
-                <a href='{% url 'create_user' %}' class="btn btn-primary">افزودن کاربر جدید<i
+                <a href='{% url 'create_user' %}' class="btn add-btn">افزودن کاربر جدید<i
                         class="icon-plus3 position-right"></i></a>
             </div>
             {% endif %}
@@ -68,8 +68,8 @@
                 <th class="table-column" data-field="user__first_name" data-template="">نام</th>
                 <th class="table-column" data-field="user__last_name" data-template="">نام خانوادگی</th>
                 <th class="table-column" data-field="user__email" data-template="">ایمیل</th>
-                <th class="table-column" data-field="user__is_active" data-template="booleanTemplateFrAdmin">وضعیت</th>
-                <th class="table-column" data-field="black_list" data-template="booleanTemplateFrAdmin">بلاک</th>
+                <th class="table-column" data-field="user__is_active" data-template="booleanTemplate">وضعیت</th>
+                <th class="table-column" data-field="black_list" data-template="booleanTemplate">بلاک</th>
                 <th class="table-column" data-field="mobile" data-template="">موبایل</th>
                 <th class="table-column" data-field="unit" data-template="">واحد</th>
                 <th class="table-column" data-field="group__name" data-template="">گروه</th>

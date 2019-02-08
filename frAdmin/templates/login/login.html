@@ -5,7 +5,7 @@
 
     <script>
         {% if msg %}
-            window.alert('{{ msg }}');
+            Swal.fire('{{ msg }}');
         {% endif %}
     </script>
     <div class="login-container  pace-done">
@@ -49,10 +49,6 @@
                                 <div class="form-group">
                                     <button type="submit" class="btn bg-pink-400 btn-block legitRipple">ورود<i
                                             class="icon-circle-left2 position-right"></i></button>
-                                </div>
-
-                                <div class="text-center">
-                                    <a href="">رمز عبور را فراموش کرده اید؟</a>
                                 </div>
                             </div>
                         </form>

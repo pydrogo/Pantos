@@ -16,7 +16,7 @@ var booleanTemplateFrAdmin = function(data, type, row, meta) {
 };
 var booleanTemplate = function(data, type, row, meta) {
     if (type == 'display') {
-        return data ? '<span class="label bg-blue">True</span>' : '<span class="label bg-danger">False</span>';
+        return data ? '<span class="label bg-blue">فعال</span>' : '<span class="label bg-danger">غیرفعال</span>';
     }
     return data;
 };

@@ -6,11 +6,9 @@ from django.http import JsonResponse, Http404
 from frAdmin.apps.web.models import Camera as CameraModel
 from frAdmin.apps.web.models.raspberry import Raspberry
 import requests
-from frAdmin.settings import parameter
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 import json
-from django.contrib.auth import authenticate
-import eventlet
+
 
 
 class Camera(LoginRequiredMixin, TemplateView):

@@ -15,7 +15,7 @@
 <!-- Content area -->
 {% block base_script %}
     {% if msg %}
-        alert('{{ msg }}');
+        Swal.fire('{{ msg }}');
     {% endif %}
 {#    function StatusTemplate(data, type, row, meta) {#}
 {#        if (type == 'display') {#}
@@ -32,8 +32,8 @@
             var edit_raspberry = '{% url 'raspberry-edit' '-10' %}'.replace('-10', data);
             var remove_raspberry = '{% url 'raspberry-remove' '-10' %}'.replace('-10', data);
             return '<a href="'+add_modem+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-blue" ><i class="icon-pencil"></i></a> \
-                    <a href="'+edit_raspberry+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a> \
-                    <a href="'+remove_raspberry+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>';
+                    <a href="'+edit_raspberry+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini edit-btn" ><i class="icon-pencil"></i></a> \
+                    <a href="'+remove_raspberry+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini reset-btn"><i class="icon-database-remove"></i></a>';
         }
     return data ;
     }
@@ -47,7 +47,7 @@
         <div class="panel-heading">
             <h5 class="panel-title">رزبری</h5>
             <div class="heading-elements">
-                <a href='{% url 'create-raspberry' %}' class="btn btn-primary"> افزودن Raspberry <i class="icon-plus3 position-right"></i></a>
+                <a href='{% url 'create-raspberry' %}' class="btn add-btn"> افزودن Raspberry <i class="icon-plus3 position-right"></i></a>
             </div>
         </div>
 
@@ -56,10 +56,10 @@
             <tr>
                 <th class="table-column" data-field="name" data-template="">نام </th>
                 <th class="table-column" data-field="ip" data-template="">آی پی </th>
-                <th class="table-column" data-field="status" data-template="enabledTemplate">وضعیت</th>
+                <th class="table-column" data-field="status" data-template="booleanTemplate">وضعیت</th>
                 <th class="table-column" data-field="sub_netmask" data-template="">پوشش زیر شبکه</th>
                 <th class="table-column" data-field="default_gateway" data-template="">ورودی پیش فرض</th>
-                <th class="table-column" data-field="dhcp" data-template="enabledTemplate">dhcp</th>
+                <th class="table-column" data-field="dhcp" data-template="booleanTemplate">dhcp</th>
                 <th class="table-column" data-field="id" data-template="actionTemplate">حذف/ویرایش</th>
             </tr>
             </thead>

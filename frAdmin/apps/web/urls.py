@@ -18,6 +18,7 @@ from frAdmin.apps.web.views.login import Login
 from frAdmin.apps.web.views.logout import LogOut
 from frAdmin.apps.web.views.rasberry import Config, Wifi, reset_raspberry
 from frAdmin.apps.web.views.camera import camera_status
+from frAdmin.apps.web.views.about import About
 
 urlpatterns = [
     path('', index, name='index'),
@@ -87,5 +88,6 @@ urlpatterns = [
     re_path(r'^modem/(?P<id>(\-?)[0-9]+)/remove$', RemoveModem.as_view(), name='remove_modem'),
 
     path('camera/status', camera_status, name='camera_status'),
+    path('about', About, name='about_us'),
 
 ]

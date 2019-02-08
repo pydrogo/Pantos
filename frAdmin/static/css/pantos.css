@@ -23,60 +23,106 @@ body {
     font-family: iranSans !important;
     font-size: 13px;
     line-height: 1.5384616;
-    color: #333333;
+    color: #272b35;
     /*background-color: rgba(0, 0, 0, 0.94);*/
     /*background-image: url("");*/
-    /*background-color: #263238;*/
+    background-color: #272b35;
 }
-
 
 .navbar-default {
     /* background-color: #fff; */
     /* border-color: #ddd; */
-    background-color: rgba(0, 0, 0, 0.94);
+    background-color: #272b35;
     border-color: #ddd;
 }
 
 .sidebar {
-    background-color: rgba(0, 0, 0, 0.94);
-
+    background-color: #272b35;
 }
 
-
 .panel {
-    background-color: #404348;
+    /*background-color: #272b35;*/
+    background-color: #1a1e27;
     color: white;
 }
 
-
 .panel-flat > .panel-heading {
-    background-color: #404348;
+    background-color: #1a1e27;
 }
 
-
 .form-control {
-    color: wheat;
-    background-color:#404348 ;
+    color: white;
+    background-color: #1a1e27;
     height: 40px;
 
 }
 
-.frAdmin-datatable{
+.frAdmin-datatable {
     color: white;
 }
 
-.frAdmin-dashboard-datatable{
+.frAdmin-dashboard-datatable {
     color: white;
 }
-#dashboard-panel-heading{
+
+#dashboard-panel-heading {
 
     background-color: #1a222f;
 }
 
-.pantos_dropdown{
+.pantos_dropdown {
     color: white;
 }
 
 .element.style {
-     color: white;
+    color: white;
+}
+
+.file-btn {
+    background-color: #246ec3;
+}
+
+.save-btn {
+    background-color: #246ec3;
+    color: white;
+}
+
+.reset-btn {
+    background-color: #923c3c;
+    color: white;
+}
+
+.btn-text {
+    color: white;
+}
+
+.add-btn {
+    background-color: #246ec3;
+    color: white;
+}
+
+.panel-body-accent {
+    background-color: #1a1e27;
+}
+
+.datepicker-plot-area * {
+    text-align: center;
+    color: white;
+    font: inherit;
+}
+
+.datepicker-plot-area .datepicker-time-view {
+    background: #272b35;
+}
+
+.datepicker-plot-area.datepicker-state-only-time {
+    background-color: #1a1e27;
+}
+.edit-btn{
+    background-color: #669236;
+    color: white;
+}
+.log-btn{
+    background-color: #af827c;
+    color: white;
 }

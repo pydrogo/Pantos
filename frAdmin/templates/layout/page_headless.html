@@ -4,7 +4,7 @@
 {% block base_content %}
     {% if msg %}
         <script>
-            window.alert('{{ msg }}');
+            Swal.fire('{{ msg }}');
         </script>
     {% endif %}
     <!-- Main navbar -->

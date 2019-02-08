@@ -6,8 +6,7 @@
         <div class="uploader">
             {% render_field field class+='file-styled-primary' type='file' placeholder='' onchange=func accept="image/png, image/jpeg, image/jpg" %}
             <span class="filename" style="user-select: none;">{{ val }}</span>
-            <span class="action btn bg-blue legitRipple" style="user-select: none;">Choose File</span>
-
+            <span class="action btn file-btn legitRipple" style="user-select: none;">Choose File</span>
         </div>
         {% for error in field.errors %}<span class="help-block">{{ error }}</span>{% endfor %}
     </div>

@@ -30,7 +30,6 @@ $(document).ready(function () {
 
 
     });
-    debugger;
     for (var i = 0; i < time_list_value.length; i++) {
         $('#start-' + time_list_value[i]['day_number']).val(time_list_value[i]['start']);
         $('#end-' + time_list_value[i]['day_number']).val(time_list_value[i]['end']);

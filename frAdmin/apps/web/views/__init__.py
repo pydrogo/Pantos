@@ -9,3 +9,4 @@ from .schedule_time import ScheduleTime
 from .logout import LogOut
 from .log import Log, get_log_list
 from .modem import Modem, CreateModem, EditModem, RemoveModem, get_modem_list
+from .about import About
