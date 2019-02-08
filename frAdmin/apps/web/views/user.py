@@ -5,8 +5,6 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.shortcuts import render, get_object_or_404
-from requests import request
-
 from frAdmin.apps.web.forms.user_profile import UserProfileForm
 from frAdmin.apps.web.forms.user_image import UserImageForm
 from frAdmin.apps.web.forms.user import UserForm
@@ -121,7 +119,7 @@ class CreateUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 userimage_model.objects.create(user=userprofile_instance,
                                                profile_image=item)
             stream_row_id = request.POST.get('row_id', 0)
-            if stream_row_id != 0:
+            if stream_row_id != 0 and stream_row_id!='':
                 for item in range(0, int(stream_row_id) + 1):
                     if request.POST.get('stream_image' + str(item), None):
                         user_img = userimage_model(user=userprofile_instance)
@@ -134,7 +132,7 @@ class CreateUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                         user_img.save()
             ####### send api to encode image  ############################################################
             res = requests.post('http://localhost:8888/encoding',
-                                data=json.dumps({'encoding': True, 'username': create_user.username, 'prof': 'Added'}))
+                                    data=json.dumps({'encoding': True, 'username': create_user.username, 'prof': 'Added'}))
             if res.status_code == 200:
                 msg = 'کد گزاری تصاویر با موفیقت انجام شد'
             else:
