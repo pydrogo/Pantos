@@ -17,7 +17,7 @@
     function allow_timeTemplate(data, type, row, meta) {
         if (type == 'display') {
                 var allowed_url = '{% url 'schedule_time' '-10' %}'.replace('-10', data);
-                return '<a href="'+allowed_url+'" ><img src="/static/css/icons/clock.png" style="width: 35px"></a>';
+                return '<a href="'+allowed_url+'" ><img src="/static/images/icons8-clock-filled-480.png" style="width: 50px"></a>';
         }
         return data;
     }
@@ -30,14 +30,14 @@
     function actionTemplateEdit(data, type, row, meta) {
         if (type == 'display') {
             var edit_group = '{% url 'group-edit' '-10' %}'.replace('-10', data);
-            return '{% if perms.auth.change_group %}<a href="'+edit_group+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a>{% endif %}';
+            return '{% if perms.auth.change_group %}<a href="'+edit_group+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini edit-btn" ><i class="icon-pencil"></i></a>{% endif %}';
         }
     return data;
     }
     function actionTemplateRemove(data, type, row, meta) {
         if (type == 'display') {
             var remove_group = '{% url 'group-remove' '-10' %}'.replace('-10', data);
-            return '{% if perms.auth.delete_group %}<a href="'+remove_group+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>{% endif %}';
+            return '{% if perms.auth.delete_group %}<a href="'+remove_group+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini reset-btn"><i class="icon-database-remove"></i></a>{% endif %}';
         }
     return data;
     }
@@ -52,7 +52,7 @@
             <h5 class="panel-title">گروه</h5>
             {% if perms.auth.add_group %}
             <div class="heading-elements">
-                <a href='{% url 'create-group' %}' class="btn btn-primary">افزودن گروه جدید<i
+                <a href='{% url 'create-group' %}' class="btn add-btn">افزودن گروه جدید<i
                         class="icon-plus3 position-right"></i></a>
             </div>
             {% endif %}
@@ -69,7 +69,7 @@
                 </th>
 
                 {% for alarm in alarm_list %}
-                    <th class="table-column" data-field="{{ alarm.name }}" data-template="booleanTemplateFrAdmin">{{ alarm.title }}</th>
+                    <th class="table-column" data-field="{{ alarm.name }}" data-template="booleanTemplate">{{ alarm.title }}</th>
                 {% endfor %}
 
                 <th class="table-column" data-field="id" data-template="allow_timeTemplate">ساعات مجاز</th>

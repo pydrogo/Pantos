@@ -80,6 +80,7 @@ class Config(TemplateView):
                         data['ftp_password'] = ''
                 else:
                     data['unkown_persons'] = False
+                form.save()
                 res = requests.post('http://localhost:8888/change_raspberry', data=json.dumps(data))
                 if res.status_code == 200:
                     form.save()

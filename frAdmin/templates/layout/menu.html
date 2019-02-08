@@ -5,7 +5,6 @@
         <div class="sidebar-user-material">
             <div class="category-content">
                 <div class="sidebar-user-material-content">
-                    {{ user.first_name }} {{ user.last_name }}
                 </div>
             </div>
         </div>
@@ -83,7 +82,7 @@
                                     class="icon-connection"></i><span>اتصال به WiFi</span></a>
                         </li>
                         <li class="">
-                            <a href=""><i
+                            <a href="{% url 'about_us' %}"><i
                                     class="icon-info22"></i><span>درباره ما</span></a>
                         </li>
                     {% endif %}

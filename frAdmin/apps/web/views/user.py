@@ -121,7 +121,7 @@ class CreateUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 userimage_model.objects.create(user=userprofile_instance,
                                                profile_image=item)
             stream_row_id = request.POST.get('row_id', 0)
-            if stream_row_id != 0:
+            if stream_row_id != 0 and stream_row_id != '':
                 for item in range(0, int(stream_row_id) + 1):
                     if request.POST.get('stream_image' + str(item), None):
                         user_img = userimage_model(user=userprofile_instance)
@@ -260,7 +260,7 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                     userimage_model.objects.create(user=userprofile_instance,
                                                    profile_image=item)
                 stream_row_id = request.POST.get('row_id', 0)
-                if stream_row_id != 0:
+                if stream_row_id != 0 and stream_row_id != '':
                     for item in range(0, int(stream_row_id) + 1):
                         if request.POST.get('stream_image' + str(item), None):
                             user_img = userimage_model(user=userprofile_instance)

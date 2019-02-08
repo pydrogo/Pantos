@@ -13,7 +13,7 @@
 {% block content %}
     {% if msg %}
         <script>
-            window.alert('{{ msg }}');
+            Swal.fire('{{ msg }}');
             window.location.replace('/raspberry/wifi');
         </script>
     {% endif %}
@@ -69,11 +69,11 @@
                     </div>
                 </div>
                 <hr>
-                <button type="submit" class="btn btn-primary"> اتصال <i
+                <button type="submit" class="btn save-btn"> اتصال <i
                         class="icon-arrow-right14 position-right"></i></button>
             </form>
             <div class="text-right">
-                <button onclick="turn_off_wifi()" type="button" class="btn btn-danger"> خاموش کردن وای فای <i
+                <button onclick="turn_off_wifi()" type="button" class="btn reset-btn"> خاموش کردن وای فای <i
                         class=""></i></button>
             </div>
         </div>

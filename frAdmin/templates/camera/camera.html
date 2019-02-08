@@ -27,14 +27,14 @@
     function actionTemplateEdit(data, type, row, meta) {
         if (type == 'display') {
             var edit_camera = '{% url 'camera-edit' '-10' %}'.replace('-10', data);
-            return '{% if perms.web.change_camera %}<a href="'+edit_camera+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a>{% endif %}';
+            return '{% if perms.web.change_camera %}<a href="'+edit_camera+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini edit-btn" ><i class="icon-pencil"></i></a>{% endif %}';
         }
     return data;
     }
     function actionTemplateRemove(data, type, row, meta) {
         if (type == 'display') {
             var remove_camera = '{% url 'camera-remove' '-10' %}'.replace('-10', data);
-            return '{% if perms.web.delete_camera %}<a href="'+remove_camera+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>{% endif %}';
+            return '{% if perms.web.delete_camera %}<a href="'+remove_camera+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini reset-btn"><i class="icon-database-remove"></i></a>{% endif %}';
         }
     return data;
     }
@@ -49,7 +49,7 @@
             <h5 class="panel-title">دوربین</h5>
              {% if perms.web.add_camera %}
             <div class="heading-elements">
-                <a href='{% url 'create-camera' %}' class="btn btn-primary"> افزودن دوربین <i class="icon-plus3 position-right"></i></a>
+                <a href='{% url 'create-camera' %}' class="btn add-btn"> افزودن دوربین <i class="icon-plus3 position-right"></i></a>
             </div>
             {% endif %}
         </div>

@@ -2,6 +2,7 @@
 {% load static %}
 {% block base_style %}
     <link type="text/css" rel="stylesheet" href="{% static 'css/persian-date.css' %}"/>
+    <link href="{% static 'css/pantos.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block base_pre_script %}
@@ -63,7 +64,7 @@
                     <hr>
                     <input type="hidden" name="group_id" value="{{ item.group.id }}">
                 {% endfor %}
-                <button class="btn btn-primary" type="submit">ذخیره</button>
+                <button class="btn save-btn" type="submit">ذخیره</button>
             </div>
 
         </form>

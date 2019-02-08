@@ -11,5 +11,6 @@ class Log(Base):
     description = models.TextField(blank=True)
     result = models.BooleanField(blank=True)
     objects = LogManager()
+
     class Meta:
         db_table = 'logs'

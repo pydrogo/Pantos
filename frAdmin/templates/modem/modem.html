@@ -27,8 +27,8 @@
         if (type == 'display') {
             var edit_modem = '{% url 'edit_modem' '-10' %}'.replace('-10', data);
             var remove_modem = '{% url 'remove_modem' '-10' %}'.replace('-10', data);
-            return '<a href="'+edit_modem+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-green" ><i class="icon-pencil"></i></a> \
-                    <a href="'+remove_modem+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini bg-danger"><i class="icon-database-remove"></i></a>';
+            return '<a href="'+edit_modem+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini edit-btn" ><i class="icon-pencil"></i></a> \
+                    <a href="'+remove_modem+'" class="btn btn-float btn-rounded legitRipple btn-erebor-mini reset-btn"><i class="icon-database-remove"></i></a>';
         }
     return data ;
     }

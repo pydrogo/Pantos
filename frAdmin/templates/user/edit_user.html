@@ -46,26 +46,6 @@
 {% endblock %}
 <!-- Content area -->
 {% block content %}
-
-    <div class="modal fade " role="dialog" id="modal_stream">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body" id="modal_body_stream">
-                    <input type="hidden" id="input_select_camera">
-                    <div id="stream-div">
-                        <iframe id="stream-frame"
-                                src="">
-                        </iframe>
-                    </div>
-                    <button type="submit" class="btn btn-primary" id="snapshot_btn" onclick="snapshot()"> گرفتن عکس
-                        <i class="icon-arrow-right14 position-right"></i></button>
-                    <div class="col-md-12" id="show_modal_images">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <br>
     <br>
     <div class="panel panel-flat">
@@ -136,9 +116,19 @@
                     </div>
                     <div class="col-md-12" id="show_images">
                     </div>
-                    {% include 'layout/single_upload_field.html' with field=userprofile_instance_form.image_profile name='تصویر پروفایل' placeholder='Profile Image' %}
+                    <br><br>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">تصویر پروفایل:</label>
+                        <div class="col-lg-10">
+                            <div class="uploader">
+                                <input class="file-styled-primary" name="image_profile" type="file"
+                                       placeholder="Profile Image" accept="image/png, image/jpeg, image/jpg">
+                                <span class="action btn file-btn legitRipple"
+                                      style="user-select: none;">Choose File</span>
+                            </div>
+                        </div>
+                    </div>
                     <div id="profile_pic_div"></div>
-
                     {% if profile_image_url %}
                         {% for item in profile_image_url %}
                             {% if item.image_profile and item.image_profile.url %}
@@ -149,10 +139,10 @@
                     {% endif %}
                 </div>
                 <hr>
-            <input name="row_id" id="row_id" type="hidden" value="">
+                <input name="row_id" id="row_id" type="hidden" value="">
             </form>
             <div class="text-right">
-                <button class="btn btn-primary" onclick="edit_pass_validation()"> ذخیره <i
+                <button class="btn save-btn" onclick="edit_pass_validation()"> ذخیره <i
                         class="icon-move-left position-right"></i></button>
             </div>
         </div>
