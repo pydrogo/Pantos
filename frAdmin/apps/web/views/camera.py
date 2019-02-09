@@ -10,7 +10,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 import json
 
 
-
 class Camera(LoginRequiredMixin, TemplateView):
     login_url = 'login'
     redirect_field_name = 'login'
@@ -132,30 +131,12 @@ class SelectCamera(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
 
         res = ''
         try:
-            res = requests.post('http://localhost:8888/camera', data=json.dumps(json_data))
-            if res.status_code == 200:
-                recive_data = res.json()
-                cam1_status = recive_data[0].get('cam1', False)
-                cam2_status = recive_data[1].get('cam2', False)
-                if cam1:
-                    cam1.is_active = cam1_status
-                    cam1.save()
-                if cam2:
-                    cam2.is_active = cam2_status
-                    cam2.save()
-                if (cam1_status):
-                    cam1_status = " فعال "
-                else:
-                    cam1_status = " غیر فعال "
-                if (cam2_status):
-                    cam2_status = " فعال "
-                else:
-                    cam2_status = " غیر فعال "
-                msg = "دوربین یک " + cam1_status + " -- " + "دوربین دو  " + cam2_status
-                return render(request, 'camera/select_camera.html', {'camera_list': camera_list, 'msg': msg})
-            else:
-                msg = 'خطا در اتصال به رزبری، لطفا مجددا تلاش کنید.'
-                return render(request, 'camera/select_camera.html', {'camera_list': camera_list, 'msg': msg})
+            try:
+                res = requests.post('http://localhost:8888/camera', data=json.dumps(json_data))
+                return redirect('select_camera')
+            except Exception as e:
+                print(str(e))
+                return redirect('select_camera')
         except Exception as e:
             msg = 'خطایی رخ داده است ' + str(e)
             camera_list = CameraModel.objects.all()
@@ -208,7 +189,8 @@ def camera_status(request):
             if cam1_id != -1 and cam1_status:
                 flag = True
             else:
-                flag = False
+                if cam1_id != -1:
+                    flag = False
 
             if cam2_id != -1 and cam2_status and flag:
                 flag = True

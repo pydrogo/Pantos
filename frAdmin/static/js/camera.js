@@ -14,7 +14,7 @@ function select_checked(check_id) {
     if (count > 2) {
         Swal.fire('در حال حاضر تعداد دوربین های مجاز 2 عدد می باشد.');
         $('#' + check_id).prop('checked', false);
-        // $('#' + check_id).parent.removeClass("");
+        $('#' + check_id).parent().removeClass("checked");
     }
 }
 

@@ -121,8 +121,9 @@ class Wifi(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
                 data = {'wifi_turn_on': True}
                 res = requests.post('http://localhost:8888/wifi', data=json.dumps(data))
                 if res.status_code == 200:
-                    msg = 'با موفقیت ارسال شد'
-                    return render(request, 'raspberry/wifi.html', {'msg': msg})
+                    return redirect('raspberry_wifi')
+                    # msg = 'با موفقیت ارسال شد'
+                    # return render(request, 'raspberry/wifi.html', {'msg': msg})
                 else:
                     msg = 'خطا در اتصال به رزبری'
                     return render(request, 'raspberry/wifi.html', {'msg': msg})
@@ -135,10 +136,8 @@ class Wifi(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
             }
             res = requests.post('http://localhost:8888/wifi', data=json.dumps(data))
             if res.status_code == 200:
-                # if res.data['status':success]
-                # else sfail add camera
-                msg = 'با موفقیت ارسال شد'
-                return render(request, 'raspberry/wifi.html', {'msg': msg})
+                return redirect('raspberry_wifi')
+
             else:
                 msg = 'خطا در اتصال به رزبری'
                 return render(request, 'raspberry/wifi.html', {'msg': msg})
