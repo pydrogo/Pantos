@@ -66,20 +66,15 @@ class CreateUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 is_active = False
             user_row = 1
             ni_validation = request.POST.get('username', '')
-            validation_int = int(ni_validation)
-            if (isinstance(validation_int, int) != False):
-                p = re.compile('^[0][1-9]\d{9}$|^[1-9]\d{9}$')
-                if (p.match(ni_validation) != None):
-                    pass
-                else:
-                    userform = UserForm(request.POST, request.FILES)
-                    userprofileform = UserProfileForm(request.POST, request.FILES)
-                    imageform = UserImageForm(request.POST, request.FILES)
-                    camera_list = CameraModel.objects.filter(is_active=True)
-                    return render(request, 'user/create_user.html',
-                                  {'user_row': user_row, 'userform': userform, 'imageform': imageform,
-                                   'userprofileform': userprofileform,
-                                   'camera_list': camera_list})
+            if not ni_validation.isdigit() or not len(ni_validation) == 10:
+                userform = UserForm(request.POST, request.FILES)
+                userprofileform = UserProfileForm(request.POST, request.FILES)
+                imageform = UserImageForm(request.POST, request.FILES)
+                camera_list = CameraModel.objects.filter(is_active=True)
+                return render(request, 'user/create_user.html',
+                              {'user_row': user_row, 'userform': userform, 'imageform': imageform,
+                               'userprofileform': userprofileform,
+                               'camera_list': camera_list})
             create_user, created = user_model.objects.update_or_create(username=request.POST['username'],
                                                                        first_name=request.POST['first_name'],
                                                                        last_name=request.POST['last_name'],
@@ -191,20 +186,16 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
             is_active = False
         user_row = 1
         ni_validation = request.POST.get('username', '')
-        validation_int = int(ni_validation)
-        if (isinstance(validation_int, int) != False):
-            p = re.compile('^[0][1-9]\d{9}$|^[1-9]\d{9}$')
-            if (p.match(ni_validation) != None):
-                pass
-            else:
-                userform = UserForm(request.POST, request.FILES)
-                userprofileform = UserProfileForm(request.POST, request.FILES)
-                imageform = UserImageForm(request.POST, request.FILES)
-                camera_list = CameraModel.objects.filter(is_active=True)
-                return render(request, 'user/create_user.html',
-                              {'user_row': user_row, 'userform': userform, 'imageform': imageform,
-                               'userprofileform': userprofileform,
-                               'camera_list': camera_list})
+
+        if not ni_validation.isdigit() or not len(ni_validation) == 10:
+            userform = UserForm(request.POST, request.FILES)
+            userprofileform = UserProfileForm(request.POST, request.FILES)
+            imageform = UserImageForm(request.POST, request.FILES)
+            camera_list = CameraModel.objects.filter(is_active=True)
+            return render(request, 'user/create_user.html',
+                          {'user_row': user_row, 'userform': userform, 'imageform': imageform,
+                           'userprofileform': userprofileform,
+                           'camera_list': camera_list})
         try:
             userprofile_instance = get_object_or_404(userprofile_model, pk=kwargs['id'])
             user_id = userprofile_instance.user_id
@@ -225,33 +216,17 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                                                                                last_name=request.POST['last_name'],
                                                                                email=request.POST['email'],
                                                                                )
+
+                create_userprofile = userprofile_model.objects.filter(pk=kwargs['id']).first()
+                create_userprofile.user_id = user_id
+                create_userprofile.unit = request.POST['unit']
+                create_userprofile.group_id = request.POST['group']
+                create_userprofile.mobile = request.POST['mobile']
+                create_userprofile.pass_limitation = request.POST['pass_limitation']
+                create_userprofile.black_list = user_block
                 if request.FILES.get('image_profile', 0) and request.FILES['image_profile'] != '':
-                    create_userprofile = userprofile_model.objects.filter(pk=kwargs['id']).update(user_id=user_id,
-                                                                                                  unit=request.POST[
-                                                                                                      'unit'],
-                                                                                                  group_id=request.POST[
-                                                                                                      'group'],
-                                                                                                  mobile=request.POST[
-                                                                                                      'mobile'],
-                                                                                                  pass_limitation=
-                                                                                                  request.POST[
-                                                                                                      'pass_limitation'],
-                                                                                                  black_list=user_block,
-                                                                                                  image_profile=
-                                                                                                  request.FILES[
-                                                                                                      'image_profile'])
-                else:
-                    create_userprofile = userprofile_model.objects.filter(pk=kwargs['id']).update(user_id=user_id,
-                                                                                                  unit=request.POST[
-                                                                                                      'unit'],
-                                                                                                  group_id=request.POST[
-                                                                                                      'group'],
-                                                                                                  black_list=user_block,
-                                                                                                  pass_limitation=
-                                                                                                  request.POST[
-                                                                                                      'pass_limitation'],
-                                                                                                  mobile=request.POST[
-                                                                                                      'mobile'])
+                    create_userprofile.image_profile = request.FILES['image_profile']
+                create_userprofile.save()
 
                 for item in request.FILES.getlist('profile_image'):
                     # userimage_model.objects.filter(user=userprofile_instance).delete()
