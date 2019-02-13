@@ -20,34 +20,84 @@ $(document).ready(function () {
 });
 
 function pass_validation() {
-    var passconfirm_id = document.getElementById('confirm_pass').value;
-    var edit_pass_id = (document.getElementById('password')) ? document.getElementById('password').value : '';
-    if (typeof edit_pass_id !== 'undefined') {
-        if (edit_pass_id == passconfirm_id) {
-            $('#user_create_form').submit();
-        } else {
+    var username = (document.getElementById('id_username')) ? document.getElementById('id_username').value : '';
+    var reg = /^[0-9]{10}$/;
+    var checking = username.match(reg);
+    if (checking) {
+        var status = 0;
+        var firstname = (document.getElementById('id_first_name')) ? document.getElementById('id_first_name').value : '';
+        var lastname = (document.getElementById('id_last_name')) ? document.getElementById('id_last_name').value : '';
+        var email = (document.getElementById('id_email')) ? document.getElementById('id_email').value : '';
+        if (firstname == '' || lastname == '' || email == '') {
             Swal.fire({
                 type: 'error',
-                title: 'متاسفیم',
-                text: 'رمز عبور شما با تکرار رمز عبور یکسان نیست لطفا دوباره تلاش نمایید',
+                text: 'لطفا فیلدهای اجباری را پر نمایید',
             })
+        } else {
+            status = 1;
         }
+        if (status == 1) {
+            var passconfirm_id = document.getElementById('confirm_pass').value;
+            var edit_pass_id = (document.getElementById('password')) ? document.getElementById('password').value : '';
+            if (typeof edit_pass_id !== 'undefined') {
+                if (edit_pass_id == passconfirm_id) {
+                    $('#user_create_form').submit();
+                } else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'متاسفیم',
+                        text: 'رمز عبور شما با تکرار رمز عبور یکسان نیست لطفا دوباره تلاش نمایید',
+                    })
+                }
+            }
+        }
+    } else {
+        Swal.fire({
+            type: 'error',
+            title: 'خطا',
+            text: 'نام کاربری باید عدد و 10 رقم باشد',
+        })
     }
 }
 
 function edit_pass_validation() {
-    var passconfirm_id = document.getElementById('confirm_pass').value;
-    var edit_pass_id = (document.getElementById('password')) ? document.getElementById('password').value : '';
-    if (typeof edit_pass_id !== 'undefined') {
-        if (edit_pass_id == passconfirm_id) {
-            $('#user_edit_form').submit();
-        } else {
+    var username = (document.getElementById('id_username')) ? document.getElementById('id_username').value : '';
+    var reg = /^[0-9]{10}$/;
+    var checking = username.match(reg);
+    if (checking) {
+        var status = 0;
+        var firstname = (document.getElementById('id_first_name')) ? document.getElementById('id_first_name').value : '';
+        var lastname = (document.getElementById('id_last_name')) ? document.getElementById('id_last_name').value : '';
+        var email = (document.getElementById('id_email')) ? document.getElementById('id_email').value : '';
+        if (firstname == '' || lastname == '' || email == '') {
             Swal.fire({
                 type: 'error',
-                title: 'متاسفیم',
-                text: 'رمز عبور شما با تکرار رمز عبور یکسان نیست لطفا دوباره تلاش نمایید',
+                text: 'لطفا فیلدهای اجباری را پر نمایید',
             })
+        } else {
+            status = 1;
         }
+        if (status == 1) {
+            var passconfirm_id = document.getElementById('confirm_pass').value;
+            var edit_pass_id = (document.getElementById('password')) ? document.getElementById('password').value : '';
+            if (typeof edit_pass_id !== 'undefined') {
+                if (edit_pass_id == passconfirm_id) {
+                    $('#user_edit_form').submit();
+                } else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'متاسفیم',
+                        text: 'رمز عبور شما با تکرار رمز عبور یکسان نیست لطفا دوباره تلاش نمایید',
+                    })
+                }
+            }
+        }
+    } else {
+        Swal.fire({
+            type: 'error',
+            title: 'خطا',
+            text: 'نام کاربری باید عدد و 10 رقم باشد',
+        })
     }
 }
 

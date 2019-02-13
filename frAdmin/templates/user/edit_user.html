@@ -80,28 +80,28 @@
                     <span class="col-md-2"></span><span id="username_validation_error"
                                                         style="color: yellow; visibility: hidden">⚠️لطفا فقط عدد 10 رقمی وارد نمایید⚠️</span>
                     <div class="form-group">
-                        <label class="col-lg-2 control-label">رمز عبور :</label>
+                        <label class="col-lg-2 control-label">رمز عبور : <span class="text-danger">*</span></label>
                         <div class="col-lg-10">
                             <input type="password" name="password" class="form-control" placeholder="password"
                                    id="password">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 control-label">تکرار رمز عبور :</label>
+                        <label class="col-lg-2 control-label">تکرار رمز عبور : <span class="text-danger">*</span></label>
                         <div class="col-lg-10">
                             <input type="password" class="form-control" placeholder="confirm password"
                                    id="confirm_pass">
                         </div>
                     </div>
-                    {% include 'layout/user_text_filed.html' with field=user_instance_form.first_name name='نام' placeholder='FirstName' %}
-                    {% include 'layout/user_text_filed.html' with field=user_instance_form.last_name name='نام خانوادگی' placeholder='LastName' %}
-                    {% include 'layout/user_text_filed.html' with field=user_instance_form.email name='ایمیل' placeholder='Email' %}
+                    {% include 'layout/user_text_filed.html' with field=user_instance_form.first_name name='نام' placeholder='FirstName' required='required' %}
+                    {% include 'layout/user_text_filed.html' with field=user_instance_form.last_name name='نام خانوادگی' placeholder='LastName'  required='required' %}
+                    {% include 'layout/user_text_filed.html' with field=user_instance_form.email name='ایمیل' placeholder='Email' required='required' %}
                     {% include 'layout/intiger_field.html' with field=userprofile_instance_form.mobile|attr:"maxlength:12" name='شماره همراه' placeholder='Mobile Number' %}
-                    {% include 'layout/user_text_filed.html' with field=userprofile_instance_form.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
+                    {% include 'layout/text_field.html' with field=userprofile_instance_form.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
                     {% include 'layout/user_checkbox_field.html' with field=userprofile_instance_form.black_list name='بلاک' %}
-                    {% include 'layout/drop_down_field.html' with field=userprofile_instance_form.group name='گروه' placeholder='Group' %}
+                    {% include 'layout/drop_down_field.html' with field=userprofile_instance_form.group name='گروه' placeholder='Group' required='required'%}
                     {% include 'layout/integer_pass_field.html' with field=userprofile_instance_form.pass_limitation name='محدودیت تردد در روز' placeholder='Pass Limitation' %}
-                    {% include 'layout/upload_field.html' with field=image_instance_form.profile_image name='تصاویر تشخیص چهره'  func='show_dataset_pic()' placeholder='Face recognition images' %}
+                    {% include 'layout/upload_field.html' with field=image_instance_form.profile_image name='تصاویر تشخیص چهره' func='show_dataset_pic()' placeholder='Face recognition images' %}
                     <div class="row">
                         {% for item in image_url %}
                             <div class="col-md-2">
@@ -131,9 +131,11 @@
                     <div id="profile_pic_div"></div>
                     {% if profile_image_url %}
                         {% for item in profile_image_url %}
-                            {% if item.image_profile and item.image_profile.url %}
-                                <a target="_blank"><img id="image_tag" style="width: 100px"
-                                                        src="{{ item.image_profile.url }}"></a>
+                            {% if item.image_profile.url != '/media/Null'  %}
+                                {% if item.image_profile and item.image_profile.url %}
+                                    <a target="_blank"><img id="image_tag" style="width: 100px"
+                                                            src="{{ item.image_profile.url }}"></a>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                     {% endif %}
