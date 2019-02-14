@@ -59,8 +59,7 @@ class Config(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
                         'new_getway': form.cleaned_data['default_gateway'],
                         'new_subnet_mask': form.cleaned_data['sub_netmask'],
                     }
-                if request.POST.get('play_video_intro', 0) and (
-                        form.fields.get('play_video_intro', 0) or config.play_video_intro):
+                if request.POST.get('play_video_intro', 0) and (form.files.get('play_video_intro', 0) or config.video_intro):
                     data['video_introduction'] = True
                 else:
                     data['video_introduction'] = False

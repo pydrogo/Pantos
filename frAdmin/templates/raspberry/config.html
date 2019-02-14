@@ -13,8 +13,8 @@
 <!-- Content area -->
 {% block content %}
     <script>
-        {% if error %}
-            Swal.fire('{{ error }}');
+        {% if msg %}
+            Swal.fire('{{ msg }}');
         {% endif %}
     </script>
     <br>

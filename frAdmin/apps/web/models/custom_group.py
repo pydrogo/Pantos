@@ -15,11 +15,6 @@ class Group(Base):
     welcome_voice = models.FileField(upload_to='welcome_voice', null=False, blank=True)
     active_rele_time = models.IntegerField(null=False)
 
-    # email_to_boss = models.BooleanField(null=False, default=False)
-    # email_to_person = models.BooleanField(null=False, default=False)
-    # take_picture = models.BooleanField(null=False, default=True)
-    # rele_number = models.IntegerField(null=False)
-
     objects = GroupManager()
 
     class Meta:
@@ -57,5 +52,8 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
     new_file = instance.welcome_voice
     if not old_file == new_file:
-        if os.path.isfile(old_file.path):
-            os.remove(old_file.path)
+        try:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
+        except Exception as e:
+            print(e)

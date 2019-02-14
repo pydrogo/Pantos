@@ -42,6 +42,10 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
         if os.path.isfile(instance.image_profile.path):
             os.remove(instance.image_profile.path)
 
+def save(self, *args, **kwargs):
+    return super(UserProfile, self).save(*args, **kwargs)
+
+
 
 @receiver(models.signals.pre_save, sender=UserProfile)
 def auto_delete_file_on_change(sender, instance, **kwargs):
@@ -62,7 +66,3 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
-
-
-def save(self, *args, **kwargs):
-    return super(UserProfile, self).save(*args, **kwargs)
