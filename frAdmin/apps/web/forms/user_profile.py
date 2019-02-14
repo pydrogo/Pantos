@@ -14,14 +14,11 @@ class UserProfileForm(ModelForm):
         Widgets = {
             'mobile': forms.IntegerField(),
         }
-        error_messages = {
-            'image_profile': {
-                'invalid': ("Image files only")
-            }
-        }
 
     objects = UserManager()
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.fields['group'].queryset = GroupDjango.objects.all()
+        self.fields['image_profile'].required = False
+        self.fields['mobile'].required = False
