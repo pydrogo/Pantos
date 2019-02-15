@@ -6,6 +6,13 @@ $(document).ready(function () {
 
 
 function submitform() {
+    Swal.fire({
+
+        type: 'warning',
+        title: 'لطفا دوربین ها را مجددا فعالسازی نمایید.',
+        showConfirmButton: false,
+    });
+    window.setTimeout(3000);
     $('#form1').submit();
 }
 

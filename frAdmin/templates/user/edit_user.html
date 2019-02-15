@@ -95,7 +95,7 @@
                     </div>
                     {% include 'layout/user_text_filed.html' with field=user_instance_form.first_name name='نام' placeholder='FirstName' required='required' %}
                     {% include 'layout/user_text_filed.html' with field=user_instance_form.last_name name='نام خانوادگی' placeholder='LastName'  required='required' %}
-                    {% include 'layout/user_text_filed.html' with field=user_instance_form.email name='ایمیل' placeholder='Email' required='required' %}
+                    {% include 'layout/text_field.html' with field=user_instance_form.email name='ایمیل' placeholder='Email' required='required' %}
                     {% include 'layout/intiger_field.html' with field=userprofile_instance_form.mobile|attr:"maxlength:12" name='شماره همراه' placeholder='Mobile Number' %}
                     {% include 'layout/text_field.html' with field=userprofile_instance_form.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
                     {% include 'layout/user_checkbox_field.html' with field=userprofile_instance_form.black_list name='بلاک' %}

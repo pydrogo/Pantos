@@ -16,7 +16,6 @@ $(document).ready(function () {
         $(".modal-body").modal('hide');
         $(".in_modal").empty();
     });
-    $()
 });
 
 function pass_validation() {
@@ -27,8 +26,8 @@ function pass_validation() {
         var status = 0;
         var firstname = (document.getElementById('id_first_name')) ? document.getElementById('id_first_name').value : '';
         var lastname = (document.getElementById('id_last_name')) ? document.getElementById('id_last_name').value : '';
-        var email = (document.getElementById('id_email')) ? document.getElementById('id_email').value : '';
-        if (firstname == '' || lastname == '' || email == '') {
+        var mobile = (document.getElementById('id_mobile')) ? document.getElementById('id_mobile').value : '';
+        if (firstname == '' || lastname == '' || mobile == '' || mobile == 0) {
             Swal.fire({
                 type: 'error',
                 text: 'لطفا فیلدهای اجباری را پر نمایید',
@@ -55,7 +54,7 @@ function pass_validation() {
         Swal.fire({
             type: 'error',
             title: 'خطا',
-            text: 'نام کاربری باید عدد و 10 رقم باشد',
+            text: 'شماره ملی باید عدد و 10 رقم باشد',
         })
     }
 }
@@ -68,8 +67,8 @@ function edit_pass_validation() {
         var status = 0;
         var firstname = (document.getElementById('id_first_name')) ? document.getElementById('id_first_name').value : '';
         var lastname = (document.getElementById('id_last_name')) ? document.getElementById('id_last_name').value : '';
-        var email = (document.getElementById('id_email')) ? document.getElementById('id_email').value : '';
-        if (firstname == '' || lastname == '' || email == '') {
+        var mobile = (document.getElementById('id_mobile')) ? document.getElementById('id_mobile').value : '';
+        if (firstname == '' || lastname == '' || mobile == '' || mobile == 0) {
             Swal.fire({
                 type: 'error',
                 text: 'لطفا فیلدهای اجباری را پر نمایید',

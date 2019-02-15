@@ -18,6 +18,27 @@
 
 
 {% block content %}
+    <script>
+        function actionType(data, type, row, meta) {
+            if (type == 'display') {
+                if (data == 'ok') {
+                    return 'ورود موفق';
+                }
+                else if (data == 'unknown_user') {
+                    return 'کاربر تعریف نشده';
+                }
+                else if (data == 'unauthorized_time') {
+                    return 'زمان غیر مجاز';
+                }
+                else if (data == 'block_user') {
+                    return 'بلک لیست';
+                }
+                else if (data == 'max_request_exceed') {
+                    return 'تردد بیش از حد مجاز';
+                }
+            }
+        }
+    </script>
     <!-- Individual column searching (selects) -->
     <div><br></div>
     <div class="panel panel-flat">
@@ -25,14 +46,18 @@
             <h5 class="panel-title">لاگ ها</h5>
         </div>
     </div>
-        <div class="panel panel-flat">
+    <div class="panel panel-flat">
         <table id="group-table" class="dataTable table frAdmin-datatable" data-url="{% url 'get_log_list' %}">
             <thead class="table-options m--hide">
             <tr>
                 <th class="table-column" data-field="username__username" data-template="">نام کاربری</th>
-                <th class="table-column" data-field="date" data-template="">تاریخ</th>
-                <th class="table-column" data-field="description" data-template="">توضیحات</th>
-                <th class="table-column" data-field="id" data-template="">آیدی</th>
+{#                <th class="table-column" data-field="username__UserProfile__last_snapshot"#}
+{#                    data-template="imageTemplate">اخرین عکس#}
+{#                </th>#}
+                <th class="table-column" data-field="date" data-template="persianDateTimeTemplate">تاریخ</th>
+                <th class="table-column" data-field="action" data-template="actionType">نوع</th>
+                {#                <th class="table-column" data-field="description" data-template="">توضیحات</th>#}
+                {#                <th class="table-column" data-field="id" data-template="">آیدی</th>#}
             </tr>
             </thead>
         </table>

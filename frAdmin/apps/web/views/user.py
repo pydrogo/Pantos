@@ -66,20 +66,15 @@ class CreateUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 is_active = False
             user_row = 1
             ni_validation = request.POST.get('username', '')
-            validation_int = int(ni_validation)
-            if (isinstance(validation_int, int) != False):
-                p = re.compile('^[0][0-9]\d{9}$|^[0-9]\d{9}$')
-                if (p.match(ni_validation) != None):
-                    pass
-                else:
-                    userform = UserForm(request.POST, request.FILES)
-                    userprofileform = UserProfileForm(request.POST, request.FILES)
-                    imageform = UserImageForm(request.POST, request.FILES)
-                    camera_list = CameraModel.objects.filter(is_active=True)
-                    return render(request, 'user/create_user.html',
-                                  {'user_row': user_row, 'userform': userform, 'imageform': imageform,
-                                   'userprofileform': userprofileform,
-                                   'camera_list': camera_list})
+            if not ni_validation.isdigit() or not len(ni_validation) == 10:
+                userform = UserForm(request.POST, request.FILES)
+                userprofileform = UserProfileForm(request.POST, request.FILES)
+                imageform = UserImageForm(request.POST, request.FILES)
+                camera_list = CameraModel.objects.filter(is_active=True)
+                return render(request, 'user/create_user.html',
+                              {'user_row': user_row, 'userform': userform, 'imageform': imageform,
+                               'userprofileform': userprofileform,
+                               'camera_list': camera_list})
             create_user, created = user_model.objects.update_or_create(username=request.POST['username'],
                                                                        first_name=request.POST['first_name'],
                                                                        last_name=request.POST['last_name'],
@@ -193,20 +188,16 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
             is_active = False
         user_row = 1
         ni_validation = request.POST.get('username', '')
-        validation_int = int(ni_validation)
-        if (isinstance(validation_int, int) != False):
-            p = re.compile('^[0][0-9]\d{9}$|^[0-9]\d{9}$')
-            if (p.match(ni_validation) != None):
-                pass
-            else:
-                userform = UserForm(request.POST, request.FILES)
-                userprofileform = UserProfileForm(request.POST, request.FILES)
-                imageform = UserImageForm(request.POST, request.FILES)
-                camera_list = CameraModel.objects.filter(is_active=True)
-                return render(request, 'user/create_user.html',
-                              {'user_row': user_row, 'userform': userform, 'imageform': imageform,
-                               'userprofileform': userprofileform,
-                               'camera_list': camera_list})
+
+        if not ni_validation.isdigit() or not len(ni_validation) == 10:
+            userform = UserForm(request.POST, request.FILES)
+            userprofileform = UserProfileForm(request.POST, request.FILES)
+            imageform = UserImageForm(request.POST, request.FILES)
+            camera_list = CameraModel.objects.filter(is_active=True)
+            return render(request, 'user/create_user.html',
+                          {'user_row': user_row, 'userform': userform, 'imageform': imageform,
+                           'userprofileform': userprofileform,
+                           'camera_list': camera_list})
         try:
             userprofile_instance = get_object_or_404(userprofile_model, pk=kwargs['id'])
             user_id = userprofile_instance.user_id
@@ -214,13 +205,14 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
             imageprofile_instance = userimage_model(user=userprofile_instance)
             if user:
                 if request.POST.get('password', 0) and request.POST['password'] != '':
-                    create_user = user_model.objects.filter(pk=user_id).update(username=request.POST['username'],
-                                                                               first_name=request.POST['first_name'],
-                                                                               last_name=request.POST['last_name'],
-                                                                               email=request.POST['email'],
-                                                                               password=request.POST['password'])
+                    create_user = user_model.objects.filter(pk=user_id).first()
+                    create_user.username = request.POST['username']
+                    create_user.first_name = request.POST['first_name']
+                    create_user.last_name = request.POST['last_name']
+                    create_user.email = request.POST['email']
+                    create_user.set_password(request.POST['password'])
+                    create_user.save()
                 else:
-                    # passw = user_model.objects.filter(pk=user_id).first().password
                     create_user = user_model.objects.filter(pk=user_id).update(username=request.POST['username'],
                                                                                first_name=request.POST['first_name'],
                                                                                last_name=request.POST['last_name'],
@@ -235,37 +227,10 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 create_userprofile.pass_limitation = request.POST['pass_limitation']
                 create_userprofile.black_list = user_block
                 if request.FILES.get('image_profile', 0) and request.FILES['image_profile'] != '':
-                    create_userprofile = userprofile_model.objects.filter(pk=kwargs['id']).update(
-                        user_id=user_id,
-                        unit=request.POST[
-                            'unit'],
-                        group_id=request.POST[
-                            'group'],
-                        mobile=request.POST[
-                            'mobile'],
-                        pass_limitation=
-                        request.POST[
-                            'pass_limitation'],
-                        black_list=user_block,
-                        image_profile=
-                        request.FILES[
-                            'image_profile'])
-                else:
-                    create_userprofile = userprofile_model.objects.filter(pk=kwargs['id']).update_or_create(
-                        user_id=user_id,
-                        unit=request.POST[
-                            'unit'],
-                        group_id=request.POST[
-                            'group'],
-                        black_list=user_block,
-                        pass_limitation=
-                        request.POST[
-                            'pass_limitation'],
-                        mobile=request.POST[
-                            'mobile'])
+                    create_userprofile.image_profile = request.FILES['image_profile']
+                create_userprofile.save()
 
                 for item in request.FILES.getlist('profile_image'):
-                    # userimage_model.objects.filter(user=userprofile_instance).delete()
                     userimage_model.objects.create(user=userprofile_instance,
                                                    profile_image=item)
                 stream_row_id = request.POST.get('row_id', 0)
@@ -280,7 +245,18 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                                                                 request.POST.get('stream_image' + str(item), '')),
                                                             name=filename), save=True)
                             user_img.save()
-                if request.FILES.getlist('profile_image') or (int(stream_row_id) >=0):
+                if request.FILES.getlist('profile_image') or (int(stream_row_id) >= 0):
+                    ####### send api to encode image  ############################################################
+                    res = requests.post('http://localhost:8888/encoding', data=json.dumps(
+                        {'encoding': True, 'username': userprofile_instance.user.username, 'prof': 'Edited'}))
+                    if res.status_code == 200:
+                        msg = 'کد گزاری تصاویر با موفیقت انجام شد'
+                    else:
+                        msg = 'خطا در اتصال به رزبری'
+                    ####### send api to encode image  ############################################################
+                if request.FILES.get('stream_image', 0) and request.FILES['stream_image'] != '':
+                    userimage_model.objects.filter(user_id=kwargs['id']).update(
+                        profile_image=request.FILES['stream_image'])
                     ####### send api to encode image  ############################################################
                     res = requests.post('http://localhost:8888/encoding', data=json.dumps(
                         {'encoding': True, 'username': userprofile_instance.user.username, 'prof': 'Edited'}))
@@ -311,14 +287,16 @@ class DeleteUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 os.remove(base_dir + "fr_pics/profile_pic/" + str(username))
             except Exception as e:
                 print(str(e))
+            temp = userimage_model.objects.filter(user_id=kwargs['id']).all().count()
             user_model.objects.filter(username=username).delete()
             ####### send api to encode image  ############################################################
-            res = requests.post('http://localhost:8888/encoding',
-                                data=json.dumps({'encoding': True, 'username': username, 'prof': 'Deleted'}))
-            if res.status_code == 200:
-                msg = 'کد گزاری تصاویر با موفیقت انجام شد'
-            else:
-                msg = 'خطا در اتصال به رزبری'
+            if temp != 0 :
+                res = requests.post('http://localhost:8888/encoding',
+                                    data=json.dumps({'encoding': True, 'username': username, 'prof': 'Deleted'}))
+                if res.status_code == 200:
+                    msg = 'کد گزاری تصاویر با موفیقت انجام شد'
+                else:
+                    msg = 'خطا در اتصال به رزبری'
             ####### send api to encode image  ############################################################
         except Exception as e:
             print(str(e))

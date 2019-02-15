@@ -98,7 +98,7 @@ $(function() {
         autoWidth: false,
         scrollX: true,
         columnDefs: [{
-            orderable: true,
+            orderable: false,
             targets: [ 5 ]
         }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
