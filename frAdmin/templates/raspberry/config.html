@@ -37,10 +37,10 @@
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 <div class="row form-group">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         {% include 'layout/text_field.html' with field=config_form.name name='نام دستگاه' placeholder='نام دستگاه' %}
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-12">
                         <label class="col-lg-3 control-label">ویدئو پیشواز:</label>
                         <div class="col-lg-9 uploader">
                             <input class="file-styled-primary" name="video_intro" type="file"
@@ -73,7 +73,7 @@
                             <label class="control-label col-lg-11">افراد ناشناس</label>
                         </div>
                     </div>
-                    <div class="col-md-6 col-md-offset-1">
+                    <div class="col-md-12">
                         <input type="hidden" name="ftp_path_val" id="ftp_path_val" value="">
                         <div id="div_ip_id" class="form-group col-md-12">
                             {% include 'layout/text_field.html' with field=config_form.ip name='آی پی جدید' placeholder=' برای مثال 192.168.1.1' %}
@@ -85,7 +85,7 @@
                             {% include 'layout/text_field.html' with field=config_form.default_gateway name='Default Gateway' %}
                         </div>
                     </div>
-                    <div class="col-md-6 col-md-offset-1">
+                    <div class="col-md-12">
                         <div class="form-group col-md-12" id="ftp_path_id">
                             {% include 'layout/text_field.html' with field=config_form.ftp_path name='مسیر FTP افراد ناشناس' placeholder='مسیر FTP افراد ناشناس' %}
                         </div>

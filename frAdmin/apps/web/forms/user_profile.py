@@ -21,4 +21,4 @@ class UserProfileForm(ModelForm):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.fields['group'].queryset = GroupDjango.objects.all()
         self.fields['image_profile'].required = False
-        self.fields['mobile'].required = False
+        self.fields['mobile'].required = True

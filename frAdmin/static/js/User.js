@@ -16,10 +16,10 @@ $(document).ready(function () {
         $(".modal-body").modal('hide');
         $(".in_modal").empty();
     });
-    $()
 });
 
-function pass_validation() {
+function save_and_add_new() {
+    $('#restart_required')[0].value = '0';
     var username = (document.getElementById('id_username')) ? document.getElementById('id_username').value : '';
     var reg = /^[0-9]{10}$/;
     var checking = username.match(reg);
@@ -27,8 +27,8 @@ function pass_validation() {
         var status = 0;
         var firstname = (document.getElementById('id_first_name')) ? document.getElementById('id_first_name').value : '';
         var lastname = (document.getElementById('id_last_name')) ? document.getElementById('id_last_name').value : '';
-        var email = (document.getElementById('id_email')) ? document.getElementById('id_email').value : '';
-        if (firstname == '' || lastname == '' || email == '') {
+        var mobile = (document.getElementById('id_mobile')) ? document.getElementById('id_mobile').value : '';
+        if (firstname == '' || lastname == '' || mobile == '' || mobile == 0) {
             Swal.fire({
                 type: 'error',
                 text: 'لطفا فیلدهای اجباری را پر نمایید',
@@ -55,7 +55,49 @@ function pass_validation() {
         Swal.fire({
             type: 'error',
             title: 'خطا',
-            text: 'نام کاربری باید عدد و 10 رقم باشد',
+            text: 'شماره ملی باید عدد و 10 رقم باشد',
+        })
+    }
+}
+
+function pass_validation() {
+    $('#restart_required')[0].value = '1';
+    var username = (document.getElementById('id_username')) ? document.getElementById('id_username').value : '';
+    var reg = /^[0-9]{10}$/;
+    var checking = username.match(reg);
+    if (checking) {
+        var status = 0;
+        var firstname = (document.getElementById('id_first_name')) ? document.getElementById('id_first_name').value : '';
+        var lastname = (document.getElementById('id_last_name')) ? document.getElementById('id_last_name').value : '';
+        var mobile = (document.getElementById('id_mobile')) ? document.getElementById('id_mobile').value : '';
+        if (firstname == '' || lastname == '' || mobile == '' || mobile == 0) {
+            Swal.fire({
+                type: 'error',
+                text: 'لطفا فیلدهای اجباری را پر نمایید',
+            })
+        } else {
+            status = 1;
+        }
+        if (status == 1) {
+            var passconfirm_id = document.getElementById('confirm_pass').value;
+            var edit_pass_id = (document.getElementById('password')) ? document.getElementById('password').value : '';
+            if (typeof edit_pass_id !== 'undefined') {
+                if (edit_pass_id == passconfirm_id) {
+                    $('#user_create_form').submit();
+                } else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'متاسفیم',
+                        text: 'رمز عبور شما با تکرار رمز عبور یکسان نیست لطفا دوباره تلاش نمایید',
+                    })
+                }
+            }
+        }
+    } else {
+        Swal.fire({
+            type: 'error',
+            title: 'خطا',
+            text: 'شماره ملی باید عدد و 10 رقم باشد',
         })
     }
 }
@@ -68,8 +110,8 @@ function edit_pass_validation() {
         var status = 0;
         var firstname = (document.getElementById('id_first_name')) ? document.getElementById('id_first_name').value : '';
         var lastname = (document.getElementById('id_last_name')) ? document.getElementById('id_last_name').value : '';
-        var email = (document.getElementById('id_email')) ? document.getElementById('id_email').value : '';
-        if (firstname == '' || lastname == '' || email == '') {
+        var mobile = (document.getElementById('id_mobile')) ? document.getElementById('id_mobile').value : '';
+        if (firstname == '' || lastname == '' || mobile == '' || mobile == 0) {
             Swal.fire({
                 type: 'error',
                 text: 'لطفا فیلدهای اجباری را پر نمایید',

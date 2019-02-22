@@ -51,18 +51,27 @@
         }
     </script>
     <br>
-    {#    <div class="col-md-12">#}
-    {#        <div class="col-md-5" style="margin-right: 10px;">#}
-    {#            <p style="color: white">#}
-    {#                وضعیت دوربین یک#}
-    {#            </p>#}
-    {#        </div>#}
-    {#        <div class="col-md-5" style="margin-right: 10px;">#}
-    {#            <p style="color: white">#}
-    {#                وضعیت دوربین دو#}
-    {#            </p>#}
-    {#        </div>#}
-    {#    </div>#}
+    <div class="row">
+        {% for item in camera_list %}
+            <div class="col-md-6">
+                <div class="panel panel-flat">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">نام دوربین : {{ item.name }}
+                        </h6>
+                        <p class="panel-title">آی پی دوربین : {{ item.ip }}
+                        </p>
+                        <div class="heading-elements">
+                            {% if item.status %}
+                                <span class="label bg-success heading-text"> فعال </span>
+                            {% else %}
+                                <span class="label bg-danger heading-text"> غیر فعال </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     <div class="row">
         <div class="col-md-4">
             <!-- Available hours -->

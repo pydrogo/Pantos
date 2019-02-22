@@ -63,7 +63,7 @@
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 <div class="form-group" id="user_form">
-                    {% include 'layout/user_text_filed.html' with field=userform.username name='شماره ملی' placeholder='نام کاربری' %}
+                    {% include 'layout/user_text_filed.html' with field=userform.username name='شماره ملی' placeholder='شماره ملی' %}
                     <span class="col-md-2"></span><span id="username_validation_error"
                                                         style="color: yellow; visibility: hidden">⚠️لطفا فقط عدد 10 رقمی وارد نمایید⚠️</span>
                     <div class="form-group">
@@ -80,10 +80,9 @@
                                    id="confirm_pass">
                         </div>
                     </div>
-
                     {% include 'layout/user_text_filed.html' with field=userform.first_name name='نام' placeholder='FirstName' required='required'%}
                     {% include 'layout/user_text_filed.html' with field=userform.last_name name='نام خانوادگی' placeholder='LastName' required='required' %}
-                    {% include 'layout/user_text_filed.html' with field=userform.email name='ایمیل' placeholder='Email' required='required' %}
+                    {% include 'layout/text_field.html' with field=userform.email name='ایمیل' placeholder='Email' required='required' %}
                     {% include 'layout/text_field.html' with field=userprofileform.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
                     {% include 'layout/intiger_field.html' with field=userprofileform.mobile name='شماره همراه' placeholder='Mobile Number' %}
                     {% include 'layout/user_checkbox_field.html' with field=userprofileform.black_list name='بلاک' %}
@@ -98,9 +97,12 @@
                 </div>
                 <hr>
                 <input name="row_id" id="row_id" type="hidden" value="">
+                <input name="restart_required" id="restart_required" type="hidden" value="0">
             </form>
             <div class="text-right">
                 <button class="btn save-btn" onclick="pass_validation()"> ذخیره <i
+                        class="icon-move-left position-right"></i></button>
+                 <button class="btn save-btn" onclick="save_and_add_new()"> ذخیره و افزودن کاربر بعدی <i
                         class="icon-move-left position-right"></i></button>
             </div>
         </div>
