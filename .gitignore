@@ -69,7 +69,7 @@ fabric.properties
 .idea/httpRequests
 .idea/
 tmp/
-frAdmin/settings/*.py
+#frAdmin/settings/*.py
 frAdmin/apps/*/migrations/*_*.py
 frAdmin/db.sqlite3
 *.swp
