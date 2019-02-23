@@ -12,7 +12,8 @@ class LogManager(Manager):
         start_row = int(per_page * page)
         query_search = query_search[start_row:start_row + per_page]
         return list(
-            query_search.values('id', 'username__username', 'date', 'description', 'action', 'result')), count_query
+            query_search.values('id', 'username__username', 'date', 'description', 'action',
+                                'result,username__UserProfile__last_snapshot')), count_query
 
     def dashboardsearch(self, query=None, per_page=10, page=0):
         query_search = self.get_queryset().all().order_by('-date')[:10]
@@ -20,5 +21,5 @@ class LogManager(Manager):
         start_row = int(per_page * page)
         query_search = query_search[start_row:start_row + per_page]
         return list(
-            query_search.values('id', 'username__username', 'username__UserProfile__last_snapshot', 'date', 'action',
-                                'result')), count_query
+            query_search.values('id', 'username__username', 'username__UserProfile__last_snapshot', 'date',
+                                'action')), count_query

@@ -126,18 +126,27 @@ class CreateUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                                                         name=filename))
                         user_img.save()
             ####### send api to encode image  ############################################################
-            res = requests.post('http://localhost:8888/encoding',
-                                data=json.dumps({'encoding': True, 'username': create_user.username, 'prof': 'Added'}))
-            if res.status_code == 200:
-                msg = 'کد گزاری تصاویر با موفیقت انجام شد'
+            restart_required = request.POST.get('restart_required', '0')
+            if restart_required == '1':
+                restart_required = True
             else:
-                msg = 'خطا در اتصال به رزبری'
+                restart_required = False
+            if request.FILES.getlist('profile_image') or (int(stream_row_id) >= 0):
+                res = requests.post('http://localhost:8888/encoding',
+                                    data=json.dumps(
+                                        {'encoding': True, 'username': create_user.username, 'prof': 'Added',
+                                         'restart': restart_required}))
+                if res.status_code == 200:
+                    msg = 'کد گزاری تصاویر با موفیقت انجام شد'
+                else:
+                    msg = 'خطا در اتصال به رزبری'
             ###################################################################
         except Exception as ex:
             print(str(ex))
-            # if (user_model.objects.filter(username=request.POST['username']).first()):
-            #     user_model.objects.filter(username=request.POST['username']).delete()
-        return redirect('user_list')
+        if request.POST.get('restart_required', '0') == '0':
+            return redirect('create_user')
+        else:
+            return redirect('user_list')
 
 
 class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
@@ -200,17 +209,17 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
             userprofile_instance = get_object_or_404(userprofile_model, pk=kwargs['id'])
             user_id = userprofile_instance.user_id
             user = user_model.objects.get(pk=user_id)
-            # userprofile_id = userprofile_instance.id
             imageprofile_instance = userimage_model(user=userprofile_instance)
             if user:
                 if request.POST.get('password', 0) and request.POST['password'] != '':
-                    create_user = user_model.objects.filter(pk=user_id).update(username=request.POST['username'],
-                                                                               first_name=request.POST['first_name'],
-                                                                               last_name=request.POST['last_name'],
-                                                                               email=request.POST['email'],
-                                                                               password=request.POST['password'])
+                    create_user = user_model.objects.filter(pk=user_id).first()
+                    create_user.username = request.POST['username']
+                    create_user.first_name = request.POST['first_name']
+                    create_user.last_name = request.POST['last_name']
+                    create_user.email = request.POST['email']
+                    create_user.set_password(request.POST['password'])
+                    create_user.save()
                 else:
-                    # passw = user_model.objects.filter(pk=user_id).first().password
                     create_user = user_model.objects.filter(pk=user_id).update(username=request.POST['username'],
                                                                                first_name=request.POST['first_name'],
                                                                                last_name=request.POST['last_name'],
@@ -229,7 +238,6 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 create_userprofile.save()
 
                 for item in request.FILES.getlist('profile_image'):
-                    # userimage_model.objects.filter(user=userprofile_instance).delete()
                     userimage_model.objects.create(user=userprofile_instance,
                                                    profile_image=item)
                 stream_row_id = request.POST.get('row_id', 0)
@@ -244,7 +252,7 @@ class EditUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                                                                 request.POST.get('stream_image' + str(item), '')),
                                                             name=filename), save=True)
                             user_img.save()
-                if request.FILES.getlist('profile_image'):
+                if request.FILES.getlist('profile_image') or (int(stream_row_id) >= 0):
                     ####### send api to encode image  ############################################################
                     res = requests.post('http://localhost:8888/encoding', data=json.dumps(
                         {'encoding': True, 'username': userprofile_instance.user.username, 'prof': 'Edited'}))
@@ -286,14 +294,16 @@ class DeleteUser(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
                 os.remove(base_dir + "fr_pics/profile_pic/" + str(username))
             except Exception as e:
                 print(str(e))
+            temp = userimage_model.objects.filter(user_id=kwargs['id']).all().count()
             user_model.objects.filter(username=username).delete()
             ####### send api to encode image  ############################################################
-            res = requests.post('http://localhost:8888/encoding',
-                                data=json.dumps({'encoding': True, 'username': username, 'prof': 'Deleted'}))
-            if res.status_code == 200:
-                msg = 'کد گزاری تصاویر با موفیقت انجام شد'
-            else:
-                msg = 'خطا در اتصال به رزبری'
+            if temp != 0:
+                res = requests.post('http://localhost:8888/encoding',
+                                    data=json.dumps({'encoding': True, 'username': username, 'prof': 'Deleted'}))
+                if res.status_code == 200:
+                    msg = 'کد گزاری تصاویر با موفیقت انجام شد'
+                else:
+                    msg = 'خطا در اتصال به رزبری'
             ####### send api to encode image  ############################################################
         except Exception as e:
             print(str(e))

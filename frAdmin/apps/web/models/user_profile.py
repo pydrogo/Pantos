@@ -11,11 +11,12 @@ from django.core.validators import FileExtensionValidator
 
 class UserProfile(Base):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='UserProfile')
-    mobile = models.IntegerField(null=False)
+    mobile = models.IntegerField(null=True, blank=True, default=0)
     unit = models.CharField(null=False, max_length=50)
     group = models.ForeignKey(GroupDjango, on_delete=models.CASCADE, blank=True)
     image_profile = models.FileField(upload_to=get_user_file_path,
-                                     validators=[FileExtensionValidator(['jpg', 'png', 'jpeg'])])
+                                     validators=[FileExtensionValidator(['jpg', 'png', 'jpeg'])], blank=True,
+                                     default='Null')
     pass_limitation = models.IntegerField(null=False, default=00000)
     last_pass = models.DateTimeField(null=True, blank=True)
     counter = models.IntegerField(null=False, default=0)
@@ -42,6 +43,10 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
         if os.path.isfile(instance.image_profile.path):
             os.remove(instance.image_profile.path)
 
+def save(self, *args, **kwargs):
+    return super(UserProfile, self).save(*args, **kwargs)
+
+
 
 @receiver(models.signals.pre_save, sender=UserProfile)
 def auto_delete_file_on_change(sender, instance, **kwargs):
@@ -62,7 +67,3 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
     if not old_file == new_file:
         if os.path.isfile(old_file.path):
             os.remove(old_file.path)
-
-
-def save(self, *args, **kwargs):
-    return super(UserProfile, self).save(*args, **kwargs)
