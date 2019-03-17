@@ -1,8 +1,10 @@
+import requests
 from django.db import models
 from .base import Base
 from frAdmin.apps.web.managers import RaspberryManager
 import os
 from django.dispatch import receiver
+from django.db.models import signals
 
 
 class Raspberry(Base):
@@ -17,6 +19,7 @@ class Raspberry(Base):
     ftp_path = models.CharField(null=True, max_length=200, blank=True)
     ftp_username = models.CharField(null=True, max_length=200, blank=True)
     ftp_password = models.CharField(null=True, max_length=200, blank=True)
+    lock_status = models.BooleanField(null=False, default=False)
 
     objects = RaspberryManager()
 
@@ -55,9 +58,18 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
     new_file = instance.video_intro
     if not old_file == new_file:
-        if os.path.isfile(old_file.path):
-            os.remove(old_file.path)
+        try:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
+        except Exception as e:
+            print(e)
 
 
-def save(self, *args, **kwargs):
-    return super(Raspberry, self).save(*args, **kwargs)
+def change_raspberry(sender, instance, created, **kwargs):
+    try:
+        if instance.lock_status :
+            res = requests.get('http://localhost:8888/StatusEncrypt')
+    except Exception as e:
+        print(str(e))
+
+signals.post_save.connect(receiver=change_raspberry, sender=Raspberry)

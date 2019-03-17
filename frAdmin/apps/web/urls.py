@@ -19,6 +19,7 @@ from frAdmin.apps.web.views.logout import LogOut
 from frAdmin.apps.web.views.rasberry import Config, Wifi, reset_raspberry
 from frAdmin.apps.web.views.camera import camera_status
 from frAdmin.apps.web.views.about import About
+from frAdmin.apps.web.views.cam_module import cam
 
 urlpatterns = [
     path('', index, name='index'),
@@ -28,7 +29,7 @@ urlpatterns = [
     path('reset_raspberry', reset_raspberry.as_view(), name='reset_raspberry'),
     re_path(r'^user-image/(?P<img_id>(\-?)[0-9]+)/delete$', delete_dataset_image, name='delete_dataset_image'),
 
-    path('log/list', get_log_list, name='get_log_list'),
+    path('user/(?P<user_id>(\-?)[0-9]+)/log/list', get_log_list, name='get_log_list'),
     path('dashboard/list', get_dashboard_log_list, name='get_dashboard_log_list'),
     re_path(r'^user/(?P<id>(\-?)[0-9]+)/log$', Log, name='user_log'),
 

@@ -11,8 +11,6 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from frAdmin.apps.web.models.alarms import Alarms
 from frAdmin.apps.web.models.user_profile import UserProfile
-from django.contrib.auth.models import User as UserDjango
-
 
 class Group(LoginRequiredMixin, TemplateView):
     login_url = 'login'
@@ -180,8 +178,10 @@ class RemoveGroup(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
             query = 4
             ###############################################################
             userlist = list(UserProfile.objects.filter(group_id=group_id).all().values('user__username'))
-            userlist = [item['user__username'] for item in userlist]
-            UserDjango.objects.filter(username__in =userlist).delete()
+            if len(userlist) != 0:
+                msg = 'این گروه شامل کاربرانی می باشد!شما مجاز به حذف نمی باشید.'
+                alarm_list = Alarms.objects.all()
+                return render(request, 'group/group.html', {'alarm_list': alarm_list, 'msg': msg})
             ###############################################################
             GroupDjango.objects.filter(id=group_instance.group_id).delete()
             msg = 'حذف گروه با موفقیت انجام گرفت.'

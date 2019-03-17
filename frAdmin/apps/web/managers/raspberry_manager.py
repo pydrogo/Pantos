@@ -13,5 +13,5 @@ class RaspberryManager(Manager):
         query_search = query_search[start_row:start_row + per_page]
         return list(
             query_search.values('name', 'dhcp', 'default_gateway', 'sub_netmask', 'status', 'ip', 'ftp_path',
-                                'unkown_person',
+                                'unkown_person','lock_status',
                                 'id', 'video_intro')), count_query

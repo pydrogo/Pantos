@@ -62,8 +62,10 @@ class EditCamera(PermissionRequiredMixin, LoginRequiredMixin, TemplateView):
         form = CameraForm(request.POST, instance=camera)
         try:
             if form.is_valid():
+                form = form.save(commit=False)
+                form.is_active = False
                 form.save()
-                return redirect('camera')
+                return redirect('select_camera')
             else:
                 msg = "خطا در تکمیل اطلاعات!"
                 return render(request, 'camera/edit.html', {'camera_form': form, 'msg': msg})

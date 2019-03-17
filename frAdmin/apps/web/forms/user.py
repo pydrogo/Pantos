@@ -10,12 +10,14 @@ class UserForm(ModelForm):
         model = User
         fields = ['username', 'password', 'first_name', 'last_name', 'email', 'is_active']
         Widgets = {
-            'password': forms.PasswordInput(),
             'email': forms.EmailField(),
-
         }
 
     objects = UserManager()
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = False
+        self.fields['password'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
