@@ -34,29 +34,6 @@
 {% endblock %}
 <!-- Content area -->
 {% block content %}
-
-
-{#    <div class="modal fade " role="dialog" id="modal_stream">#}
-{#        <div class="modal-dialog">#}
-{#            <div class="modal-content">#}
-{#                <div class="modal-body" id="modal_body_stream">#}
-{#                    <input type="hidden" id="input_select_camera">#}
-{#                    <div id="stream-div">#}
-{#                        <iframe id="stream-frame"#}
-{#                                src="">#}
-{#                        </iframe>#}
-{#                    </div>#}
-{#                    <button type="submit" class="btn save-btn" id="snapshot_btn" onclick="snapshot()"> گرفتن عکس#}
-{#                        <i class="icon-arrow-right14 position-right"></i></button>#}
-{#                    #}
-{#                    <div class="col-md-12" id="show_modal_images">#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-
-
     <br>
     <div class="panel panel-flat">
         <div class="panel-heading">
@@ -86,31 +63,30 @@
                 {% csrf_token %}
                 {{ form.non_field_errors }}
                 <div class="form-group" id="user_form">
-                    {% include 'layout/user_text_filed.html' with field=userform.username name='شماره ملی' placeholder='نام کاربری' %}
+                    {% include 'layout/user_text_filed.html' with field=userform.username name='شماره ملی' placeholder='شماره ملی' %}
                     <span class="col-md-2"></span><span id="username_validation_error"
                                                         style="color: yellow; visibility: hidden">⚠️لطفا فقط عدد 10 رقمی وارد نمایید⚠️</span>
                     <div class="form-group">
-                        <label class="col-lg-2 control-label">رمز عبور :</label>
+                        <label class="col-lg-2 control-label">رمز عبور : <span class="text-danger">*</span></label>
                         <div class="col-lg-10">
                             <input type="password" class="form-control" placeholder="Password"
                                    id="password" name="password">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-lg-2 control-label">تکرار رمز عبور :</label>
+                        <label class="col-lg-2 control-label">تکرار رمز عبور : <span class="text-danger">*</span></label>
                         <div class="col-lg-10">
                             <input type="password" class="form-control" placeholder="Confirm password"
                                    id="confirm_pass">
                         </div>
                     </div>
-
-                    {% include 'layout/user_text_filed.html' with field=userform.first_name name='نام' placeholder='FirstName' %}
-                    {% include 'layout/user_text_filed.html' with field=userform.last_name name='نام خانوادگی' placeholder='LastName' %}
-                    {% include 'layout/user_text_filed.html' with field=userform.email name='ایمیل' placeholder='Email' %}
-                    {% include 'layout/user_text_filed.html' with field=userprofileform.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
+                    {% include 'layout/user_text_filed.html' with field=userform.first_name name='نام' placeholder='FirstName' required='required'%}
+                    {% include 'layout/user_text_filed.html' with field=userform.last_name name='نام خانوادگی' placeholder='LastName' required='required' %}
+                    {% include 'layout/text_field.html' with field=userform.email name='ایمیل' placeholder='Email' required='required' %}
+                    {% include 'layout/text_field.html' with field=userprofileform.unit name='واحد سازمانی' placeholder='Organizational Unit' %}
                     {% include 'layout/intiger_field.html' with field=userprofileform.mobile name='شماره همراه' placeholder='Mobile Number' %}
                     {% include 'layout/user_checkbox_field.html' with field=userprofileform.black_list name='بلاک' %}
-                    {% include 'layout/drop_down_field.html' with field=userprofileform.group name='گروه' placeholder='Group' %}
+                    {% include 'layout/drop_down_field.html' with field=userprofileform.group name='گروه' placeholder='Group' required='required' %}
                     {% include 'layout/integer_pass_field.html' with field=userprofileform.pass_limitation name='محدودیت تردد در روز' placeholder='Pass Limitation' %}
                     {% include 'layout/upload_field.html' with field=imageform.profile_image func='show_dataset_pic()' name='تصاویر تشخیص چهره' placeholder='Face recognition images' %}
                     <div class="col-md-12" id="show_images">
@@ -121,9 +97,12 @@
                 </div>
                 <hr>
                 <input name="row_id" id="row_id" type="hidden" value="">
+                <input name="restart_required" id="restart_required" type="hidden" value="0">
             </form>
             <div class="text-right">
                 <button class="btn save-btn" onclick="pass_validation()"> ذخیره <i
+                        class="icon-move-left position-right"></i></button>
+                 <button class="btn save-btn" onclick="save_and_add_new()"> ذخیره و افزودن کاربر بعدی <i
                         class="icon-move-left position-right"></i></button>
             </div>
         </div>

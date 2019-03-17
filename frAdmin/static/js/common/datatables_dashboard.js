@@ -99,7 +99,7 @@ $(function() {
         scrollX: true,
         columnDefs: [{
             orderable: false,
-            targets: [ 5 ]
+            // targets: [ 5 ]
         }],
         dom: '<"datatable-scroll"t>',
         language: {

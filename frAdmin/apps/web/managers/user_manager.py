@@ -13,4 +13,4 @@ class UserManager(Manager):
         query_search = query_search[start_row:start_row + per_page]
         return list(query_search.values('id', 'user__username', 'last_pass', 'user__first_name', 'user__last_name',
                                         'user__email', 'pass_limitation', 'user__is_active', 'mobile', 'unit',
-                                        'group__name','black_list')), count_query
+                                        'group__name', 'black_list')), count_query

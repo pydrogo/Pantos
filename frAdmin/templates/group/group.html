@@ -3,7 +3,11 @@
 {% block base_pre_script %}
     <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
-
+<script>
+    {% if msg %}
+        Swal.fire('{{ msg }}');
+    {% endif %}
+</script>
 
 {% endblock %}
 

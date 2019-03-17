@@ -1,5 +1,4 @@
 """frAdmin URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.0/topics/http/urls/
 Examples:
@@ -41,4 +40,5 @@ urlpatterns += i18n_patterns(
     path('', include('frAdmin.apps.web.urls')),
     prefix_default_language=False
 )
-urlpatterns += mod_static(settings.STATIC_URL, document_root=settings.PANTOS_STATIC_ROOT)
+#urlpatterns += mod_static(settings.STATIC_URL, document_root=settings.PANTOS_STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

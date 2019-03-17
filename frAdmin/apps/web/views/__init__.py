@@ -10,3 +10,4 @@ from .logout import LogOut
 from .log import Log, get_log_list
 from .modem import Modem, CreateModem, EditModem, RemoveModem, get_modem_list
 from .about import About
+from .cam_module import cam

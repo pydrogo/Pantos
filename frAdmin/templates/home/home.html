@@ -1,5 +1,8 @@
 {% extends "layout/page_headless.html" %}
 {% load static %}
+{% block meta%}
+<meta http-equiv="refresh" content="30">
+{% endblock %}
 {% block base_pre_script %}
     <script type="text/javascript" src="{% static 'js/plugins/forms/selects/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/plugins/tables/datatables/datatables.min.js' %}"></script>
@@ -51,6 +54,27 @@
         }
     </script>
     <br>
+    <div class="row">
+        {% for item in camera_list %}
+            <div class="col-md-6">
+                <div class="panel panel-flat">
+                    <div class="panel-heading">
+                        <h6 class="panel-title">نام دوربین : {{ item.name }}
+                        </h6>
+                        <p class="panel-title">آی پی دوربین : {{ item.ip }}
+                        </p>
+                        <div class="heading-elements">
+                            {% if item.status %}
+                                <span class="label bg-success heading-text"> فعال </span>
+                            {% else %}
+                                <span class="label bg-danger heading-text"> غیر فعال </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     <div class="row">
         <div class="col-md-4">
             <!-- Available hours -->

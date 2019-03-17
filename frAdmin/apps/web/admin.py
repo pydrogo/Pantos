@@ -6,7 +6,7 @@ from frAdmin.apps.web.models import Group, Date, AuthorizedDay, AuthorizedTime, 
 class LogAdmin(admin.ModelAdmin):
     list_display = ("username", "action", "result", "date")
     ordering = ['date']
-    readonly_fields = ("date", "username", "action", "result", "description")
+    # readonly_fieldslds = ("date", "username", "action", "result", "description")
     search_fields = ("username", "action", "result")
 
 

@@ -1,6 +1,25 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% block base_style %}
+    <style>
+        .dropdown-menu {
+            background-color: #1a1e27;
+        }
 
+        .dropdown-menu:hover {
+            background-color: #1a1e27;
+        }
+
+        .dropdown-menu li a {
+            color: white;
+        }
+
+        .dropdown-menu li a:hover {
+            color: white;
+            background-color: #1a1e27;
+        }
+    </style>
+{% endblock %}
 {% block base_content %}
     {% if msg %}
         <script>
@@ -11,7 +30,7 @@
     <div class="navbar navbar-default header-highlight">
 
         <div class="navbar-header">
-            <a class="navbar-brand" href="#"><img src="{% static 'images/logo_light.jpg' %}" alt=""></a>
+            <a class="navbar-brand" href="#"><img src="{% static 'images/logo.png' %}" alt=""></a>
 
             <ul class="nav navbar-nav visible-xs-block">
                 <li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
@@ -27,13 +46,10 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown dropdown-user">
                     <a class="dropdown-toggle" data-toggle="dropdown">
-                        <img style="background-attachment: inherit;" src="media/{{ request.user.UserProfile.image_profile }}" alt="">
-                        <span style="color: inherit ; font-size: 18px">{{ user.first_name }} {{ user.last_name }}</span>
-                        <i class="caret"></i>
+                        <i class="icon  icon-user" style="color: whitesmoke"></i>
+                        <i class="caret" style="color: #777"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href='#'><i class="icon-user-plus"></i>پروفایل من</a></li>
-                        <li><a href='#'><i class="icon-cog5"></i> اطلاعات حساب</a></li>
                         <li><a href="{% url 'logout' %}"><i class="icon-switch2"></i> خروج</a></li>
                     </ul>
                 </li>

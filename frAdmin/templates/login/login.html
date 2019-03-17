@@ -1,6 +1,30 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% block base_style %}
+    <style type="text/css">
+        body {
+            background-color: #000000;
+        }
 
+        .login-form {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url('{% static 'images/backgrounds/login_back2.jpg' %}');
+        }
+
+        .form-control {
+            background-color: #7d8488;
+        }
+
+        .display-block {
+            color: white;
+        }
+
+        .login_logo {
+            width: 150px !important;
+        }
+    </style>
+{% endblock %}
 {% block base_content %}
 
     <script>
@@ -24,23 +48,25 @@
                             {% csrf_token %}
                             <div class="panel panel-body login-form">
                                 <div class="text-center">
-                                    <div class="icon-object border-slate-300 text-slate-300"><i
-                                            class="icon-reading"></i>
+                                    <div class="thumb thumb-slide">
+                                        <img class="login_logo" src={% static 'images/Pantos Logo.png' %}>
                                     </div>
-                                    <h5 class="content-group">وارد حساب کاربری خود شوید
-                                        <small class="display-block">اعتبارنامه خود را در زیر وارد کنید</small>
-                                    </h5>
+                                    <h6 class="content-group" style="color: #7d8488;">ورود به حساب کاربری
+                                        <long class="display-block">سیستم هوشمند تشخیص چهره پنتوس</long>
+                                    </h6>
                                 </div>
 
                                 <div class="form-group has-feedback has-feedback-left">
-                                    <input id="username" name="username" type="text" class="form-control" placeholder="نام کاربری">
+                                    <input id="username" name="username" type="text" class="form-control login_username"
+                                           placeholder="نام کاربری">
                                     <div class="form-control-feedback">
                                         <i class="icon-user text-muted"></i>
                                     </div>
                                 </div>
 
                                 <div class="form-group has-feedback has-feedback-left">
-                                    <input id="password" name="password" type="password" class="form-control" placeholder="رمز عبور">
+                                    <input id="password" name="password" type="password" class="form-control"
+                                           placeholder="رمز عبور">
                                     <div class="form-control-feedback">
                                         <i class="icon-lock2 text-muted"></i>
                                     </div>
