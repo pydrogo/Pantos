@@ -5,6 +5,7 @@ from frAdmin.apps.web.managers import RaspberryManager
 import os
 from django.dispatch import receiver
 from django.db.models import signals
+import json
 
 
 class Raspberry(Base):
@@ -67,9 +68,12 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 
 def change_raspberry(sender, instance, created, **kwargs):
     try:
-        if instance.lock_status :
-            res = requests.get('http://localhost:8888/StatusEncrypt')
+        if instance.lock_status:
+            res = requests.get('http://localhost:8888/StatusEncrypt', data=json.dumps({'encrypt': True}))
+        else:
+            res = requests.get('http://localhost:8888/StatusEncrypt', data=json.dumps({'encrypt': False}))
     except Exception as e:
         print(str(e))
+
 
 signals.post_save.connect(receiver=change_raspberry, sender=Raspberry)
